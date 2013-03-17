@@ -1,0 +1,7 @@
+MovieThumbs generates thumbnails from movie posters found on tmdb.org (The Movie DataBase)
+For downloading the posters a working internet connection is needed. MovieThumbs works with all KDE file managers.
+
+Thanks to the tmdb team for allowing the use of their api.
+
+Installation:
+    See INSTALL file

@@ -1,0 +1,12 @@
+#Qt 5
+use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
+Move from QString to QStringLiteral
+Move tmdbThumb to external library (Qt Framework?)
+
+
+Better error handling
+Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
+Include year in search
+
+Make thumbnail for other (non video) files?
+Join upstream SC?

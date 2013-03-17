@@ -1,0 +1,11 @@
+[Desktop Entry]
+Encoding=UTF-8
+Type=Service
+Name=Movie Posters
+Name[x-test]=xxMovie Postersxx
+MimeType=video/*;application/x-flash-video;application/vnd.ms-asf;application/vnd.rn-realmedia;
+X-KDE-Library=MovieThumbs
+X-KDE-ServiceTypes=ThumbCreator
+ServiceTypes=ThumbCreator
+CacheThumbnail=true
+IgnoreMaximumSize=true

@@ -1,0 +1,22 @@
+How to install MovieThumbs.
+
+Needed libs:
+    KDE 4.10
+    QJSON
+
+Make a build location 
+    mkdir build && cd build
+
+Use CMake to check all dependancies
+
+    cmake -DCMAKE_INSTALL_PREFIX='kde4-config --prefix' DCMAKE_BUILD_TYPE=Release ..
+    
+Or use debugfull for testing
+
+    cmake -DCMAKE_INSTALL_PREFIX='kde4-config --prefix' DCMAKE_BUILD_TYPE=Debugfull ..
+    
+Build
+    make
+    
+Install with root
+    sudo make install
