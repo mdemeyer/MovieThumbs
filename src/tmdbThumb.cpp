@@ -19,6 +19,7 @@
  ***************************************************************************/
 
 #include <QtCore/QByteArray>
+#include <QtCore/QRegExp>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
@@ -40,6 +41,14 @@ tmdbThumb::tmdbThumb(const QString &movieName)
     QUrl urlQuery("http://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key",KEY);
     urlQuery.addQueryItem("query",movieName);
+
+    //If there is a year include in the title use it to refine the search
+    QRegExp regex("\\b\\d{4}\\b");
+    if(regex.indexIn(movieName) != -1){
+        if(!regex.isEmpty()){
+            urlQuery.addQueryItem("year",regex.capturedTexts().at(0));
+        }
+    }
 
     m_networkManager = new QNetworkAccessManager(this);
 

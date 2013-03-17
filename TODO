@@ -6,7 +6,6 @@ Move tmdbThumb to external library (Qt Framework?)
 
 Better error handling
 Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
-Include year in search
 
 Make thumbnail for other (non video) files?
 Join upstream SC?
