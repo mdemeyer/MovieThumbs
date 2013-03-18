@@ -42,11 +42,15 @@ tmdbThumb::tmdbThumb(const QString &movieName)
     urlQuery.addQueryItem("api_key",KEY);
     urlQuery.addQueryItem("query",movieName);
 
-    //If there is a year include in the title use it to refine the search
-    QRegExp regex("\\b\\d{4}\\b");
-    if(regex.indexIn(movieName) != -1){
+    /*If there is a year included in the title use it to refine the search
+     * \(19|20) number starting with 19 OR 20
+     * \d{2} followed by 2 numbers [0-9]
+     * This works for all movies released from 1900 to 2099.
+     */
+    QRegExp regex("(19|20)\\d{2}");
+    if(regex.lastIndexIn(movieName) != -1){
         if(!regex.isEmpty()){
-            urlQuery.addQueryItem("year",regex.capturedTexts().at(0));
+            urlQuery.addQueryItem("year",regex.cap(0));
         }
     }
 
