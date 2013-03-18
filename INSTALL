@@ -9,11 +9,11 @@ Make a build location
 
 Use CMake to check all dependancies
 
-    cmake -DCMAKE_INSTALL_PREFIX='kde4-config --prefix' DCMAKE_BUILD_TYPE=Release ..
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` DCMAKE_BUILD_TYPE=Release ..
     
 Or use debugfull for testing
 
-    cmake -DCMAKE_INSTALL_PREFIX='kde4-config --prefix' DCMAKE_BUILD_TYPE=Debugfull ..
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` DCMAKE_BUILD_TYPE=Debugfull ..
     
 Build
     make
