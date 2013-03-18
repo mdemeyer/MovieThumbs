@@ -2,6 +2,8 @@ MovieThumbs generates thumbnails from movie posters found on tmdb.org (The Movie
 For downloading the posters a working internet connection is needed. MovieThumbs works with all KDE file managers.
 If wrong thumbnail is downloaded include the year when the movie was released in the file name. This will help fetch the correct poster.
 
+All information that is between brackets () and [] will not be used to search. You can still put the year in brackets.
+
 Thanks to the tmdb team for allowing the use of their api.
 
 Installation:

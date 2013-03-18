@@ -29,7 +29,7 @@ class tmdbThumb : public QObject
 {
 Q_OBJECT
 public:
-    tmdbThumb(const QString&);
+    tmdbThumb(QString&);
     ~tmdbThumb();
     QImage getPoster();
 

@@ -36,11 +36,10 @@
 const QString tmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 QImage moviePoster;
 
-tmdbThumb::tmdbThumb(const QString &movieName)
+tmdbThumb::tmdbThumb(QString &movieName)
 {
     QUrl urlQuery("http://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key",KEY);
-    urlQuery.addQueryItem("query",movieName);
 
     /*If there is a year included in the title use it to refine the search
      * \(19|20) number starting with 19 OR 20
@@ -53,6 +52,14 @@ tmdbThumb::tmdbThumb(const QString &movieName)
             urlQuery.addQueryItem("year",regex.cap(0));
         }
     }
+
+    /*Ignore all information between brackets.
+     * Works with both () and []
+     * TODO Clean up and improve the regular expression. This makes my head hurt.
+     */
+    regex.setPattern("\\([^\\(]*\\)|\\[([^]]+)\\]");
+    movieName.remove(regex);
+    urlQuery.addQueryItem("query",movieName);
 
     m_networkManager = new QNetworkAccessManager(this);
 

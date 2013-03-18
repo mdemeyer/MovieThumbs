@@ -1,2 +1,9 @@
-2013-03-17 Add year to the query
-2013-03-17 Initial release 
+v0.1.1 (2013-03-18)
+Improved year regular expression
+Better consistency with other video thumbnails
+Added translations
+Remove text between brackets
+
+v0.1 (2013-03-17)
+Add year to the query
+Initial release 

@@ -1,5 +1,6 @@
 #Qt 5
 use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
+use new regex engine
 Move from QString to QStringLiteral
 Move tmdbThumb to external library (Qt Framework?)
 
