@@ -42,6 +42,7 @@ private slots:
     void queryFinished();
     bool downloadFinished();
     void onNetworkError(QNetworkReply::NetworkError);
+    void slotSslErrors(const QList<QSslError>& sslErrors);
 
 signals:
     void posterDownloaded();

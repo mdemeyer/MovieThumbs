@@ -29,7 +29,9 @@
 #include <QtCore/QVariantMap>
 
 #include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QSslError>
 #include <qjson/parser.h>
+#include <stdio.h>
 
 #include "tmdbThumb.h"
 
@@ -38,7 +40,7 @@ QImage moviePoster;
 
 tmdbThumb::tmdbThumb(QString &movieName)
 {
-    QUrl urlQuery("http://api.themoviedb.org/3/search/movie");
+    QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key",KEY);
 
     /*If there is a year included in the title use it to refine the search
@@ -69,8 +71,8 @@ tmdbThumb::tmdbThumb(QString &movieName)
 
     QNetworkReply *reply = m_networkManager->get(request);    
     connect(reply, SIGNAL(finished()), this, SLOT(queryFinished()));
-  //connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
-  //connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
+    connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
 }
 
 tmdbThumb::~tmdbThumb()
@@ -107,7 +109,7 @@ void tmdbThumb::queryFinished()
         m_posterPath << (poster["poster_path"]).toString();
     }
 
-    QUrl downloadUrl("http://cf2.imgobject.com/t/p/w185/" + m_posterPath.at(0));
+    QUrl downloadUrl("https://cf2.imgobject.com/t/p/w185/" + m_posterPath.at(0));
 
     QNetworkRequest request;
     request.setUrl(downloadUrl);
@@ -132,6 +134,14 @@ bool tmdbThumb::downloadFinished()
 void tmdbThumb::onNetworkError( QNetworkReply::NetworkError )
 {
     qFatal("error");
+    emit downloadError();
+}
+
+void tmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
+{
+    foreach (const QSslError &error, sslErrors)
+        fprintf(stderr, "SSL error: %s\n", qPrintable(error.errorString()));
+
     emit downloadError();
 }
 
