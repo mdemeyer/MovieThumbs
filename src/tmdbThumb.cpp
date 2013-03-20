@@ -35,10 +35,10 @@
 
 #include "tmdbThumb.h"
 
-const QString tmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
+const QString TmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 QImage moviePoster;
 
-tmdbThumb::tmdbThumb(QString &movieName)
+TmdbThumb::TmdbThumb(QString &movieName)
 {
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key",KEY);
@@ -75,17 +75,17 @@ tmdbThumb::tmdbThumb(QString &movieName)
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
 }
 
-tmdbThumb::~tmdbThumb()
+TmdbThumb::~TmdbThumb()
 {
     delete m_networkManager;
 }
 
-QImage tmdbThumb::getPoster()
+QImage TmdbThumb::getPoster()
 {
     return moviePoster;
 }
 
-void tmdbThumb::queryFinished()
+void TmdbThumb::queryFinished()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
@@ -119,25 +119,25 @@ void tmdbThumb::queryFinished()
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
 }
 
-bool tmdbThumb::downloadFinished()
+bool TmdbThumb::downloadFinished()
 {
     QNetworkReply *downloadReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = downloadReply->readAll();
     downloadReply->deleteLater();
     
-    moviePoster.loadFromData( data);
+    moviePoster.loadFromData(data);
     
     emit posterDownloaded();
     return true;
 }
 
-void tmdbThumb::onNetworkError( QNetworkReply::NetworkError )
+void TmdbThumb::onNetworkError(QNetworkReply::NetworkError)
 {
     qFatal("error");
     emit downloadError();
 }
 
-void tmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
+void TmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach (const QSslError &error, sslErrors)
         fprintf(stderr, "SSL error: %s\n", qPrintable(error.errorString()));

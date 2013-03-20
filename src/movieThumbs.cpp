@@ -46,11 +46,11 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     QFileInfo file(path);
     QString movieName = file.baseName();
 
-    tmdbThumb movie(movieName);
+    TmdbThumb movie(movieName);
 
     QEventLoop loop;
     QObject::connect(&movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-    QObject::connect(&movie, SIGNAL(downloadError), &loop, SLOT(quit()));
+    QObject::connect(&movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
     loop.exec();
 
     img = movie.getPoster();
@@ -63,7 +63,6 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
 ThumbCreator::Flags MovieThumbs::flags() const
 {
-    QImage test;
     return (Flags)(None);
 }
 

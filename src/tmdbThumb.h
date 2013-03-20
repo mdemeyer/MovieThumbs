@@ -25,12 +25,12 @@
 #include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
 
-class tmdbThumb : public QObject
+class TmdbThumb : public QObject
 {
 Q_OBJECT
 public:
-    tmdbThumb(QString&);
-    ~tmdbThumb();
+    TmdbThumb(QString&);
+    ~TmdbThumb();
     QImage getPoster();
 
 private:

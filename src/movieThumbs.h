@@ -35,7 +35,7 @@ public:
     virtual bool create(const QString& path, int width, int height, QImage& img);
     virtual Flags flags() const;
 private:
-     tmdbThumb movie(const QString& movie);
+     TmdbThumb movie(const QString& movie);
 };
 
 #endif // _MOVIETHUMBS_H_
