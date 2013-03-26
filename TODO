@@ -1,12 +1,18 @@
+TODO
+========
+
+#Short turn
+*Better error handling
+*Check for network connection
+*Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
+*Reuse QNetworkAccesManager, don't create a new one for each thumbnail!!
+
+#Long term
+*Move tmdbThumb to external library (Qt Framework?)
+*Add configuration option to switch between available posters
+*Include upstream if people want it
+*Merge ffmpeg and mplayer thumbnail
+
 #Qt 5
-use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
-use new regex engine
-Move from QString to QStringLiteral
-Move tmdbThumb to external library (Qt Framework?)
-
-
-Better error handling
-Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
-
-Make thumbnail for other (non video) files?
-Join upstream SC?
+*use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
+*use new regex engine
