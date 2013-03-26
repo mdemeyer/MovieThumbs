@@ -45,7 +45,7 @@ MovieThumbs::~MovieThumbs()
 bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 {
     QFileInfo file(path);
-    QString movieName = file.baseName();
+    QString movieName = file.completeBaseName(); //remove file extension
     QString year;
 
     /*If there is a year included in the title use it to refine the search
@@ -66,6 +66,12 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
      */
     regex.setPattern("\\([^\\(]*\\)|\\[([^]]+)\\]");
     movieName.remove(regex);
+
+    /* Remove all non alphanumerical characters from the name and replace them with a space.
+     * This way you can use dots and underscores in filenames.
+     */
+    regex.setPattern("[^a-zA-Z0-9\\s]");
+    movieName.replace(regex, " ");
 
     TmdbThumb movie(movieName, year);
 
