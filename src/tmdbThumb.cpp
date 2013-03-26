@@ -41,7 +41,7 @@ QImage moviePoster;
 TmdbThumb::TmdbThumb(QString &movieName)
 {
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
-    urlQuery.addQueryItem("api_key",KEY);
+    urlQuery.addQueryItem("api_key", KEY);
 
     /*If there is a year included in the title use it to refine the search
      * \(19|20) number starting with 19 OR 20
@@ -49,9 +49,9 @@ TmdbThumb::TmdbThumb(QString &movieName)
      * This works for all movies released from 1900 to 2099.
      */
     QRegExp regex("(19|20)\\d{2}");
-    if(regex.lastIndexIn(movieName) != -1){
-        if(!regex.isEmpty()){
-            urlQuery.addQueryItem("year",regex.cap(0));
+    if (regex.lastIndexIn(movieName) != -1) {
+        if (!regex.isEmpty()) {
+            urlQuery.addQueryItem("year", regex.cap(0));
         }
     }
 
@@ -61,7 +61,7 @@ TmdbThumb::TmdbThumb(QString &movieName)
      */
     regex.setPattern("\\([^\\(]*\\)|\\[([^]]+)\\]");
     movieName.remove(regex);
-    urlQuery.addQueryItem("query",movieName);
+    urlQuery.addQueryItem("query", movieName);
 
     m_networkManager = new QNetworkAccessManager(this);
 
@@ -69,7 +69,7 @@ TmdbThumb::TmdbThumb(QString &movieName)
     request.setUrl(urlQuery);
     request.setRawHeader("Accept", "application/json");
 
-    QNetworkReply *reply = m_networkManager->get(request);    
+    QNetworkReply *reply = m_networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(queryFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
@@ -90,21 +90,21 @@ void TmdbThumb::queryFinished()
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
     queryReply->deleteLater();
-    
+
     QJson::Parser parser;
     bool ok;
 
-    QVariantMap result = parser.parse (data, &ok).toMap();
+    QVariantMap result = parser.parse(data, &ok).toMap();
     if (!ok) {
         qFatal("An error occurred during parsing");
         emit downloadError();
-        exit (1);
+        exit(1);
     }
 
     QVariantList movies = result["results"].toList();
     QStringList m_posterPath;
 
-    foreach (const QVariant &variant, movies) {
+    foreach(const QVariant &variant, movies) {
         QVariantMap poster = variant.toMap();
         m_posterPath << (poster["poster_path"]).toString();
     }
@@ -124,9 +124,9 @@ bool TmdbThumb::downloadFinished()
     QNetworkReply *downloadReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = downloadReply->readAll();
     downloadReply->deleteLater();
-    
+
     moviePoster.loadFromData(data);
-    
+
     emit posterDownloaded();
     return true;
 }
@@ -139,8 +139,9 @@ void TmdbThumb::onNetworkError(QNetworkReply::NetworkError)
 
 void TmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
 {
-    foreach (const QSslError &error, sslErrors)
+    foreach(const QSslError & error, sslErrors) {
         fprintf(stderr, "SSL error: %s\n", qPrintable(error.errorString()));
+    }
 
     emit downloadError();
 }

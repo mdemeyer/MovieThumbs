@@ -55,7 +55,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
     img = movie.getPoster();
 
-    if(!img.isNull()){
+    if (!img.isNull()) {
         return true;
     } else
         return false;

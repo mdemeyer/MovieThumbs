@@ -27,7 +27,7 @@
 
 class TmdbThumb : public QObject
 {
-Q_OBJECT
+    Q_OBJECT
 public:
     TmdbThumb(QString&);
     ~TmdbThumb();
@@ -35,7 +35,7 @@ public:
 
 private:
     static const QString KEY;
-    QNetworkAccessManager* m_networkManager;
+    QNetworkAccessManager *m_networkManager;
     QImage moviePoster;
 
 private slots:
