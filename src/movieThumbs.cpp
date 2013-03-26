@@ -20,6 +20,7 @@
 
 #include <QtCore/QEventLoop>
 #include <QtCore/QFileInfo>
+#include <QtCore/QRegExp>
 #include <QtCore/QString>
 #include <QtGui/QImage>
 
@@ -45,8 +46,28 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 {
     QFileInfo file(path);
     QString movieName = file.baseName();
+    QString year;
 
-    TmdbThumb movie(movieName);
+    /*If there is a year included in the title use it to refine the search
+     * \(19|20) number starting with 19 OR 20
+     * \d{2} followed by 2 numbers [0-9]
+     * This works for all movies released from 1900 to 2099.
+     */
+    QRegExp regex("(19|20)\\d{2}");
+    if (regex.lastIndexIn(movieName) != -1) {
+        if (!regex.isEmpty()) {
+            year = regex.cap(0);
+        }
+    }
+    
+    /*Ignore all information between brackets.
+     * Works with both () and []
+     * TODO Clean up and improve the regular expression. This makes my head hurt.
+     */
+    regex.setPattern("\\([^\\(]*\\)|\\[([^]]+)\\]");
+    movieName.remove(regex);
+
+    TmdbThumb movie(movieName, year);
 
     QEventLoop loop;
     QObject::connect(&movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
