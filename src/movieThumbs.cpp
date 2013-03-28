@@ -24,6 +24,8 @@
 #include <QtCore/QString>
 #include <QtGui/QImage>
 
+#include <solid/networking.h>
+
 #include "movieThumbs.h"
 
 extern "C"
@@ -44,6 +46,12 @@ MovieThumbs::~MovieThumbs()
 
 bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 {
+    if(Solid::Networking::status() == Solid::Networking::Unconnected)
+    {
+        //No network connection available
+        return false;
+    }
+
     QFileInfo file(path);
     QString movieName = file.completeBaseName(); //remove file extension
     QString year;

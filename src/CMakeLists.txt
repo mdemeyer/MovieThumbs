@@ -4,6 +4,7 @@ kde4_add_plugin(MovieThumbs ${MovieThumbs_SRCS})
 
 target_link_libraries(MovieThumbs 
    ${KDE4_KIO_LIBS}
+   ${KDE4_SOLID_LIBS}
    ${QT_QTCORE_LIBRARY}
    ${QT_QTGUI_LIBRARY}
    ${QT_QTNETWORK_LIBRARY}

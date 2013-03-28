@@ -1,9 +1,8 @@
 TODO
 ========
 
-#Short turn
+#Short term
 *Better error handling
-*Check for network connection
 *Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
 *Reuse QNetworkAccesManager, don't create a new one for each thumbnail!!
 
