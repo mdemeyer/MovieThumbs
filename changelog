@@ -1,9 +1,17 @@
-v0.1.1 (2013-03-18)
-Improved year regular expression
-Better consistency with other video thumbnails
-Added translations
-Remove text between brackets
+0.1.2
+================================
+* Search queries are now encrypted
+* Poster are found even with complex file names
+* Check for network connection first
 
-v0.1 (2013-03-17)
-Add year to the query
-Initial release 
+0.1.1 (2013-03-18)
+================================
+*Improved year regular expression
+*Better consistency with other video thumbnails
+*Added translations
+*Remove text between brackets
+
+0.1 (2013-03-17)
+================================
+*Add year to the query
+*Initial release 
