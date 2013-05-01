@@ -18,6 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
+#include "tmdbThumb.h"
+
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -31,8 +33,6 @@
 #include <QtNetwork/QSslError>
 #include <qjson/parser.h>
 #include <stdio.h>
-
-#include "tmdbThumb.h"
 
 const QString TmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 QImage moviePoster;

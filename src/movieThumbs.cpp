@@ -18,6 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
+#include "movieThumbs.h"
+
 #include <QtCore/QEventLoop>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
@@ -25,8 +27,6 @@
 #include <QtGui/QImage>
 
 #include <solid/networking.h>
-
-#include "movieThumbs.h"
 
 extern "C"
 {

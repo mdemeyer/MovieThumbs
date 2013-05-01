@@ -18,8 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef _MOVIETHUMBS_H_
-#define _MOVIETHUMBS_H_
+#ifndef MOVIETHUMBS_H
+#define MOVIETHUMBS_H
 
 #include <QtCore/QObject>
 #include <kio/thumbcreator.h>
@@ -38,4 +38,4 @@ private:
     TmdbThumb movie(const QString& movie, const QString& year);
 };
 
-#endif // _MOVIETHUMBS_H_
+#endif // MOVIETHUMBS_H

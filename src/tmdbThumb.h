@@ -18,8 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef _TMDBTHUMB_H_
-#define _TMDBTHUMB_H_
+#ifndef TMDBTHUMB_H
+#define TMDBTHUMB_H
 
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
@@ -49,4 +49,4 @@ signals:
     void downloadError();
 };
 
-#endif // _TMDBTHUMB_H_
+#endif // TMDBTHUMB_H
