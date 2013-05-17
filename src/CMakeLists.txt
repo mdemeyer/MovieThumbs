@@ -1,4 +1,4 @@
-set(MovieThumbs_SRCS movieThumbs.cpp tmdbThumb.cpp)
+set(MovieThumbs_SRCS movieThumbs.cpp tmdbThumb.cpp fileparser.cpp)
 
 kde4_add_plugin(MovieThumbs ${MovieThumbs_SRCS})
 
