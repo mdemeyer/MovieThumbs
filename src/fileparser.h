@@ -32,6 +32,8 @@ public:
 
     static QString cleanName(const QString& path);
     static QString year(const QString& name);
+
+    static bool isSeries(const QString& name);
 };
 
 #endif // FILEPARSER_H

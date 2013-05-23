@@ -18,71 +18,36 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "fileparser.h"
-#include "movieThumbs.h"
-#include "tvdbFetcher.h"
+#ifndef TVDBTHUMB_H
+#define TVDBTHUMB_H
 
-#include <QtCore/QEventLoop>
-#include <QtCore/QString>
 #include <QtGui/QImage>
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkReply>
 
-#include <solid/networking.h>
+#include <tvdb/client.h>
+#include <tvdb/series.h>
 
-extern "C"
+class TvdbFetcher : public QObject
 {
-    KDE_EXPORT ThumbCreator *new_creator()
-    {
-        return new MovieThumbs;
-    }
-}
+    Q_OBJECT
+public:
+    TvdbFetcher(const QString& name);
+    ~TvdbFetcher();
+    QImage getPoster();
 
-MovieThumbs::MovieThumbs()
-{
-}
+private:
+    QImage poster;
+    QNetworkAccessManager *m_networkManager;
+    Tvdb::Client* m_client;
 
-MovieThumbs::~MovieThumbs()
-{
-}
+private slots:
+    void foundSeries(const Tvdb::Series& series);
+    void foundMultipleSeries(const QList<Tvdb::Series>& series);
+    bool downloadFinished();
 
-bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
-{
-    if(Solid::Networking::status() == Solid::Networking::Unconnected)
-    {
-        //No network connection available
-        return false;
-    }
+signals:
+    void posterDownloaded();
+};
 
-    QString year = FileParser::year(path);
-    QString movieName = FileParser::cleanName(path);
-
-    if(FileParser::isSeries(path)){
-        TvdbFetcher series(movieName);
-
-        QEventLoop loop;
-        QObject::connect(&series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-        loop.exec();
-
-        img = series.getPoster();
-    } else {
-        TmdbThumb movie(movieName, year);
-
-        QEventLoop loop;
-        QObject::connect(&movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-        QObject::connect(&movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
-        loop.exec();
-
-        img = movie.getPoster();
-    }
-
-    if (!img.isNull()) {
-        return true;
-    } else
-        return false;
-}
-
-ThumbCreator::Flags MovieThumbs::flags() const
-{
-    return (Flags)(None);
-}
-
-#include "movieThumbs.moc"
+#endif // TVDBTHUMB_H

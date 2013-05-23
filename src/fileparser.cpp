@@ -37,17 +37,22 @@ QString FileParser::cleanName(const QString &path)
     QFileInfo file(path);
     QString clean = file.completeBaseName(); //remove file extension
 
-    /* Remove all non alphanumerical characters from the name and replace them with a space.
-     * This way you can use dots and underscores in filenames.
-     */
-    QRegExp regex("[^a-zA-Z0-9\\s]");
-    clean.replace(regex, " ");
-
     /*Ignore all information between brackets.
      * Works with both () and []
      * TODO Clean up and improve the regular expression. This makes my head hurt.
      */
-    regex.setPattern("\\([^\\(]*\\)|\\[([^]]+)\\]");
+    QRegExp regex("\\([^\\(]*\\)|\\[([^]]+)\\]");
+    clean.remove(regex);
+
+    /* Remove all non alphanumerical characters from the name and replace them with a space.
+     * This way you can use dots and underscores in filenames.
+     */
+    regex.setPattern("[^a-zA-Z0-9\\s]");
+    clean.replace(regex, " ");
+
+    /* Remove the S00E00 part from series. TheTvdb does not recognise it.
+     */
+    regex.setPattern("[sS]([0-9]+)[eE]([0-9]+)");
     clean.remove(regex);
 
     return clean;
@@ -67,6 +72,17 @@ QString FileParser::year(const QString &name)
         }
     }
     return QString();
+}
+
+bool FileParser::isSeries(const QString &name)
+{
+    QRegExp regex("[sS]([0-9]+)[eE]([0-9]+)");
+    if (regex.lastIndexIn(name) != -1) {
+        if (!regex.isEmpty()) {
+            return true;
+        }
+    }
+    return false;
 }
 
 #include "fileparser.moc"
