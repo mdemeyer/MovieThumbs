@@ -55,15 +55,23 @@ QImage TvdbFetcher::getPoster()
 
 void TvdbFetcher::foundSeries(const Tvdb::Series &series)
 {
+    if(!series.isValid()){
+        qFatal("No valid series found");
+        emit downloadError();
+        exit(1);
+    }
+
     QList<QUrl> posterList = series.posterUrls();
+    QUrl downloadUrl = posterList[0];
 
     m_networkManager = new QNetworkAccessManager(this);
 
     QNetworkRequest request;
-    request.setUrl(posterList[0]);
+    request.setUrl(downloadUrl);
 
     QNetworkReply *reply = m_networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 }
 
 void TvdbFetcher::foundMultipleSeries(const QList<Tvdb::Series> &series)
@@ -81,6 +89,12 @@ bool TvdbFetcher::downloadFinished()
 
     emit posterDownloaded();
     return true;
+}
+
+void TvdbFetcher::onNetworkError(QNetworkReply::NetworkError)
+{
+    qFatal("Download error");
+    emit downloadError();
 }
 
 #include "tvdbFetcher.moc"

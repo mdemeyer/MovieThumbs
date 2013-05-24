@@ -48,7 +48,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 {
     if(Solid::Networking::status() == Solid::Networking::Unconnected)
     {
-        //No network connection available
+        qFatal("No network connection available");
         return false;
     }
 
@@ -60,6 +60,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
         QEventLoop loop;
         QObject::connect(&series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
+        QObject::connect(&series, SIGNAL(downloadError()), &loop, SLOT(quit()));
         loop.exec();
 
         img = series.getPoster();

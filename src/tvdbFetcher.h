@@ -45,9 +45,11 @@ private slots:
     void foundSeries(const Tvdb::Series& series);
     void foundMultipleSeries(const QList<Tvdb::Series>& series);
     bool downloadFinished();
+    void onNetworkError(QNetworkReply::NetworkError);
 
 signals:
     void posterDownloaded();
+    void downloadError();
 };
 
 #endif // TVDBTHUMB_H

@@ -117,7 +117,7 @@ bool TmdbThumb::downloadFinished()
 
 void TmdbThumb::onNetworkError(QNetworkReply::NetworkError)
 {
-    qFatal("error");
+    qFatal("Download error");
     emit downloadError();
 }
 
