@@ -1,3 +1,9 @@
+#Header file to read version number settings
+configure_file(
+    MovieThumbsConfig.h.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/MovieThumbsConfig.h
+    )
+
 set(MovieThumbs_SRCS fileparser.cpp movieThumbs.cpp tmdbThumb.cpp tvdbFetcher.cpp)
 
 kde4_add_plugin(MovieThumbs ${MovieThumbs_SRCS})
