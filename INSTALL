@@ -1,22 +1,37 @@
 How to install MovieThumbs.
-
+================================
 Needed libs:
     KDE 4.10
     QJSON
+    LibTvdb (optional)
 
+
+LibTvdb http://libtvdb.sourceforge.net/
+================================
+Install from distro package or download here: http://sourceforge.net/projects/libtvdb/
+This library is needed if you want posters from series.
+
+
+Install MOVIETHUMBS
+================================
 Make a build location 
     mkdir build && cd build
 
 Use CMake to check all dependancies
 
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` DCMAKE_BUILD_TYPE=Release ..
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ..
     
 Or use debugfull for testing
 
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` DCMAKE_BUILD_TYPE=Debugfull ..
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Debugfull ..
     
 Build
     make
     
 Install with root
     sudo make install
+
+Uninstall
+================================
+In the same build directory:
+    sudo make uninstall

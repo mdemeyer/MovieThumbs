@@ -1,10 +1,20 @@
-MovieThumbs generates thumbnails from movie posters found on tmdb.org (The Movie DataBase)
+MovieThumbs generates thumbnails for movies and optionally series.
+
 For downloading the posters a working internet connection is needed. MovieThumbs works with all KDE file managers.
 If the wrong thumbnail is downloaded include the year when the movie was released in the file name. This will help fetch the correct poster.
-
 All information that is between brackets () and [] will not be used to search. You can still put the year in brackets.
 
-Thanks to the tmdb team for allowing the use of their api.
+Movie posters are downloaded from tmdb.org (The Movie DataBase)
+Series posters are from thetvdb.com (The TV DataBase)
+
+I would like to thank the tmdb and thetvdb teams for allowing the use of their api.
+
+External dependencies:
+    KDE SC 4
+    QJson
+    LibTvdb (optional library to download series posters)
 
 Installation:
     See INSTALL file
+
+Thank you for checking out MovieThumbs. Bug reports and feedback welcome.
