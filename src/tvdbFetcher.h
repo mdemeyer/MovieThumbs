@@ -18,8 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef TVDBTHUMB_H
-#define TVDBTHUMB_H
+#ifndef TVDBFETCHER_H
+#define TVDBFETCHER_H
 
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
@@ -32,7 +32,7 @@ class TvdbFetcher : public QObject
 {
     Q_OBJECT
 public:
-    TvdbFetcher(const QString& name);
+    explicit TvdbFetcher(const QString& name);
     ~TvdbFetcher();
     QImage getPoster();
 
@@ -52,4 +52,4 @@ signals:
     void downloadError();
 };
 
-#endif // TVDBTHUMB_H
+#endif // TVDBFETCHER_H
