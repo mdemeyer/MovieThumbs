@@ -1,19 +1,19 @@
+macro_bool_to_01(LibTvdb_FOUND HAVE_TVDB)
 #Header file to read version number settings
 configure_file(
     MovieThumbsConfig.h.cmake
     ${CMAKE_CURRENT_BINARY_DIR}/MovieThumbsConfig.h
     )
 
-set(MovieThumbs_SRCS fileparser.cpp movieThumbs.cpp tmdbThumb.cpp tvdbFetcher.cpp)
+set(MovieThumbs_SRCS fileparser.cpp movieThumbs.cpp tmdbThumb.cpp)
+
+if(LibTvdb_FOUND)
+   set(MovieThumbs_SRCS ${MovieThumbs_SRCS} tvdbFetcher.cpp)
+   set(EXTRA_LIBS ${EXTRA_LIBS} ${LIBTVDB_LIBRARIES})
+   set(HAVE_TVDB 1)
+endif(LibTvdb_FOUND)
 
 kde4_add_plugin(MovieThumbs ${MovieThumbs_SRCS})
-
-macro_optional_find_package(LibTvdb)
-set_package_properties(LibTvdb PROPERTIES DESCRIPTION "A small library to fetch information from the thetvdb.com"
-                       URL "http://sourceforge.net/projects/libtvdb/"
-                       TYPE OPTIONAL
-                       PURPOSE "Required to fetch TV series posters"
-                      )
 
 target_link_libraries(MovieThumbs 
    ${KDE4_KIO_LIBS}
@@ -23,10 +23,8 @@ target_link_libraries(MovieThumbs
    ${QT_QTNETWORK_LIBRARY}
    ${QJSON_LIBRARIES}
    ${qjson_LIBRARIES} #Support debian
-   ${LIBTVDB_LIBRARIES}
+   ${EXTRA_LIBS}
    )
-
-feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 install(TARGETS MovieThumbs DESTINATION ${PLUGIN_INSTALL_DIR})
 install(FILES MovieThumbs.desktop DESTINATION ${SERVICES_INSTALL_DIR})

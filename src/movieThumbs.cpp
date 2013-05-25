@@ -18,9 +18,13 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "fileparser.h"
 #include "movieThumbs.h"
+#include "fileparser.h"
+#include "MovieThumbsConfig.h"
+
+#ifdef HAVE_TVDB
 #include "tvdbFetcher.h"
+#endif
 
 #include <QtCore/QEventLoop>
 #include <QtCore/QString>
@@ -56,6 +60,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     QString movieName = FileParser::cleanName(path);
 
     if(FileParser::isSeries(path)){
+#ifdef HAVE_TVDB
         TvdbFetcher series(movieName);
 
         QEventLoop loop;
@@ -64,6 +69,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
         loop.exec();
 
         img = series.getPoster();
+#endif
     } else {
         TmdbThumb movie(movieName, year);
 

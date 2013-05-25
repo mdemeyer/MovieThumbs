@@ -24,4 +24,6 @@
 //Version number settings
 #define MOVIETHUMBS_VERSION @MOVIETHUMBS_VERSION@
 
+#cmakedefine HAVE_TVDB @HAVE_TVDB@
+
 #endif //MOVIETHUMBSCONFIG_H
