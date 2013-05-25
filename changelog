@@ -1,3 +1,11 @@
+0.2.0
+================================
+* Small code improvements
+* Improved download speed
+* Fileparser class for regular expressions
+* Optional support for series
+* Cmake version number (for debugging)
+
 0.1.2
 ================================
 * Search queries are now encrypted

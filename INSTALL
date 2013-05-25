@@ -14,15 +14,17 @@ This library is needed if you want posters from series.
 
 Install MOVIETHUMBS
 ================================
+Extract the tarball folder
+    tar -zxvf MovieThumbs-0.2.0.tar.gz
+    cd MovieThumbs-0.2.0/
+
 Make a build location 
     mkdir build && cd build
 
 Use CMake to check all dependancies
-
     cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ..
     
 Or use debugfull for testing
-
     cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Debugfull ..
     
 Build
