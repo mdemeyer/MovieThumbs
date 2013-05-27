@@ -55,6 +55,12 @@ QString FileParser::cleanName(const QString &path)
     regex.setPattern("[sS]([0-9]+)[eE]([0-9]+)");
     clean.remove(regex);
 
+    /* Remove the year from the name.
+     */
+    if(clean.length() > 4) //movie 2012
+        regex.setPattern("(19|20)\\d{2}");
+        clean.remove(regex);
+
     return clean;
 }
 
