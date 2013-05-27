@@ -81,10 +81,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
         img = movie.getPoster();
     }
 
-    if (!img.isNull()) {
-        return true;
-    } else
-        return false;
+    return !img.isNull();
 }
 
 ThumbCreator::Flags MovieThumbs::flags() const
