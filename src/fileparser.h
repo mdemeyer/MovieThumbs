@@ -39,10 +39,24 @@ public:
     static bool isSeries(const QString& name);
 
 private:
+    /* Regex to find series. We look for these strings:
+     * S00E00: S and E can be lower or uppercase. 00 can be any number
+     * yyyy-mm-dd: Full date. This is also a common naming scheme.
+     */
     static const QStringList REGEXSERIES;
 
+    /* Regex to detect any non alphanumerical characters.
+     * This is to remove dots and underscores from filenames.
+     */
     static const QString REGEXALPHANUMERIC;
+
+    /* Regex to select everything between brackets. Both () and []
+     */
     static const QString REGEXBRACKETS;
+
+    /* Regex to detect a year.
+     * This works for all years between 1900 and 2099.
+     */
     static const QString REGEXYEAR;
 };
 
