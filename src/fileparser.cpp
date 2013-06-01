@@ -88,7 +88,7 @@ QString FileParser::cleanName(const QString &path)
         regex.setPattern(REGEXYEAR);
         clean.remove(regex);
 
-    return clean;
+    return clean.trimmed();
 }
 
 QString FileParser::year(const QString &name)
