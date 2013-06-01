@@ -23,6 +23,18 @@
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
+#include <QtCore/QStringList>
+
+/*
+ * [0-9]+                 Can be one or two numbers.
+ * (19|20)\\d{2}          year
+ * 0[1-9] | 1[012]        Number from 01 to 09 OR 10 to 12 (month)
+ * (0[1-9]|[12]\\d)|3[01] Number 01 - 31 (day)
+ * [_- .]                 Date seperator
+ */
+QStringList FileParser::seriesDetection = QStringList()
+                    << "[sS]([0-9]+)[eE]([0-9]+)" // S00E00
+                    << "(19|20)\\d{2}[_- .]((0[1-9])|(1[012]))[_- .]((0[1-9]|[12]\\d)|3[01])";  // yyyy-mm-dd
 
 FileParser::FileParser()
 {
@@ -50,10 +62,13 @@ QString FileParser::cleanName(const QString &path)
     regex.setPattern("[^a-zA-Z0-9\\s]");
     clean.replace(regex, " ");
 
-    /* Remove the S00E00 part from series. TheTvdb does not recognise it.
+    /* Remove the series detection part from the name. TheTvdb does not recognise it.
      */
-    regex.setPattern("[sS]([0-9]+)[eE]([0-9]+)");
-    clean.remove(regex);
+    QStringList::const_iterator constIterator;
+    for (constIterator = seriesDetection.constBegin(); constIterator != seriesDetection.constEnd(); ++constIterator) {
+        regex.setPattern(*constIterator);
+        clean.remove(regex);
+    }
 
     /* Remove the year from the name.
      */
@@ -82,10 +97,19 @@ QString FileParser::year(const QString &name)
 
 bool FileParser::isSeries(const QString &name)
 {
-    QRegExp regex("[sS]([0-9]+)[eE]([0-9]+)");
-    if (regex.lastIndexIn(name) != -1) {
-        if (!regex.isEmpty()) {
-            return true;
+    /* Check if the file is a series. We look for these strings:
+     * S00E00: S and E can be lower or uppercase. 00 can be any number
+     * yyyy-mm-dd: Full date. This is also a common naming scheme.
+     */
+    QRegExp regex;
+
+    QStringList::const_iterator constIterator;
+    for (constIterator = seriesDetection.constBegin(); constIterator != seriesDetection.constEnd(); ++constIterator) {
+        regex.setPattern(*constIterator);
+        if (regex.lastIndexIn(name) != -1) {
+            if (!regex.isEmpty()) {
+                return true;
+            }
         }
     }
     return false;

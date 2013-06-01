@@ -23,6 +23,8 @@
 
 #include <QtCore/QObject>
 
+class QStringList;
+
 class FileParser : public QObject
 {
     Q_OBJECT
@@ -34,6 +36,9 @@ public:
     static QString year(const QString& name);
 
     static bool isSeries(const QString& name);
+
+private:
+    static QStringList seriesDetection;
 };
 
 #endif // FILEPARSER_H
