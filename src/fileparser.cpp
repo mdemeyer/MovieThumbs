@@ -32,9 +32,13 @@
  * (0[1-9]|[12]\\d)|3[01] Number 01 - 31 (day)
  * [_- .]                 Date seperator
  */
-QStringList FileParser::seriesDetection = QStringList()
+const QStringList FileParser::REGEXSERIES = QStringList()
                     << "[sS]([0-9]+)[eE]([0-9]+)" // S00E00
                     << "(19|20)\\d{2}[_- .]((0[1-9])|(1[012]))[_- .]((0[1-9]|[12]\\d)|3[01])";  // yyyy-mm-dd
+
+const QString FileParser::REGEXALPHANUMERIC = "[^a-zA-Z0-9\\s]";
+const QString FileParser::REGEXBRACKETS = "\\([^\\(]*\\)|\\[([^]]+)\\]";
+const QString FileParser::REGEXYEAR = "(19|20)\\d{2}";
 
 FileParser::FileParser()
 {
@@ -53,19 +57,19 @@ QString FileParser::cleanName(const QString &path)
      * Works with both () and []
      * TODO Clean up and improve the regular expression. This makes my head hurt.
      */
-    QRegExp regex("\\([^\\(]*\\)|\\[([^]]+)\\]");
+    QRegExp regex(REGEXBRACKETS);
     clean.remove(regex);
 
     /* Remove all non alphanumerical characters from the name and replace them with a space.
      * This way you can use dots and underscores in filenames.
      */
-    regex.setPattern("[^a-zA-Z0-9\\s]");
+    regex.setPattern(REGEXALPHANUMERIC);
     clean.replace(regex, " ");
 
     /* Remove the series detection part from the name. TheTvdb does not recognise it.
      */
     QStringList::const_iterator constIterator;
-    for (constIterator = seriesDetection.constBegin(); constIterator != seriesDetection.constEnd(); ++constIterator) {
+    for (constIterator = REGEXSERIES.constBegin(); constIterator != REGEXSERIES.constEnd(); ++constIterator) {
         regex.setPattern(*constIterator);
         clean.remove(regex);
     }
@@ -73,7 +77,7 @@ QString FileParser::cleanName(const QString &path)
     /* Remove the year from the name.
      */
     if(clean.length() > 4) //movie 2012
-        regex.setPattern("(19|20)\\d{2}");
+        regex.setPattern(REGEXYEAR);
         clean.remove(regex);
 
     return clean;
@@ -86,7 +90,7 @@ QString FileParser::year(const QString &name)
      * \d{2} followed by 2 numbers [0-9]
      * This works for all movies released from 1900 to 2099.
      */
-    QRegExp regex("(19|20)\\d{2}");
+    QRegExp regex(REGEXYEAR);
     if (regex.lastIndexIn(name) != -1) {
         if (!regex.isEmpty()) {
             return regex.cap(0);
@@ -104,7 +108,7 @@ bool FileParser::isSeries(const QString &name)
     QRegExp regex;
 
     QStringList::const_iterator constIterator;
-    for (constIterator = seriesDetection.constBegin(); constIterator != seriesDetection.constEnd(); ++constIterator) {
+    for (constIterator = REGEXSERIES.constBegin(); constIterator != REGEXSERIES.constEnd(); ++constIterator) {
         regex.setPattern(*constIterator);
         if (regex.lastIndexIn(name) != -1) {
             if (!regex.isEmpty()) {
