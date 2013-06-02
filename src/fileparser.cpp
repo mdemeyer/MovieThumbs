@@ -30,7 +30,7 @@
  * (19|20)\\d{2}          year
  * 0[1-9] | 1[012]        Number from 01 to 09 OR 10 to 12 (month)
  * (0[1-9]|[12]\\d)|3[01] Number 01 - 31 (day)
- * [_- .]                 Date seperator
+ * [_- .]                 Date separator
  */
 const QStringList FileParser::REGEXSERIES = QStringList()
                     << "[sS]([0-9]+)[eE]([0-9]+)" // S00E00
