@@ -42,6 +42,7 @@ private:
     /* Regex to find series. We look for these strings:
      * S00E00: S and E can be lower or uppercase. 00 can be any number
      * yyyy-mm-dd: Full date. This is also a common naming scheme.
+     * [xxxxxxxx]: 8 character long checksum. Commonly used with anime.
      */
     static const QStringList REGEXSERIES;
 

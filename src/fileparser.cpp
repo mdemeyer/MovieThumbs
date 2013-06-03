@@ -31,10 +31,13 @@
  * 0[1-9] | 1[012]        Number from 01 to 09 OR 10 to 12 (month)
  * (0[1-9]|[12]\\d)|3[01] Number 01 - 31 (day)
  * [_- .]                 Date separator
+ * [\\[|\\(]              '[' or '['
+ * [a-zA-Z0-9\\s]{8}      8 alphanumeric chars
  */
 const QStringList FileParser::REGEXSERIES = QStringList()
                     << "[sS]([0-9]+)[eE]([0-9]+)" // S00E00
-                    << "(19|20)\\d{2}[_- .]((0[1-9])|(1[012]))[_- .]((0[1-9]|[12]\\d)|3[01])";  // yyyy-mm-dd
+                    << "(19|20)\\d{2}[_- .]((0[1-9])|(1[012]))[_- .]((0[1-9]|[12]\\d)|3[01])"  // yyyy-mm-dd
+                    << ("[\\[|\\(][a-zA-Z0-9]{8}[\\]|\\)]"); //[abCD5678] or (abCD5678)
 
 /* REGEXALPHANUMERIC
  *TODO Allow special characters from foreign languages
