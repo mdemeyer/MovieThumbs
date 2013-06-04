@@ -4,7 +4,6 @@ TODO
 #Short term
 *Better error handling
 *Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
-*Reuse QNetworkAccesManager, don't create a new one for each thumbnail!!
 
 #Long term
 *Move tmdbThumb to external library (Qt Framework?)

@@ -22,20 +22,24 @@
 #define TMDBTHUMB_H
 
 #include <QtGui/QImage>
-#include <QtNetwork/QNetworkAccessManager>
 #include <QtNetwork/QNetworkReply>
+
+QT_BEGIN_NAMESPACE
+class QNetworkAccessManager;
+class QNetworkReply;
+QT_END_NAMESPACE
 
 class TmdbThumb : public QObject
 {
     Q_OBJECT
+
 public:
-    TmdbThumb(const QString& name, const QString& year);
-    ~TmdbThumb();
+    TmdbThumb(const QString& name, const QString& year, QNetworkAccessManager *qnam);
     QImage getPoster();
 
 private:
     static const QString KEY;
-    QNetworkAccessManager *m_networkManager;
+    QNetworkAccessManager *networkManager;
     QImage moviePoster;
 
 private slots:

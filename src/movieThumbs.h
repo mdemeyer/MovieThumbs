@@ -21,8 +21,11 @@
 #ifndef MOVIETHUMBS_H
 #define MOVIETHUMBS_H
 
-#include <QtCore/QObject>
 #include <kio/thumbcreator.h>
+
+QT_BEGIN_NAMESPACE
+class QNetworkAccessManager;
+QT_END_NAMESPACE
 
 #include "tmdbThumb.h"
 
@@ -35,7 +38,7 @@ public:
     virtual bool create(const QString& path, int width, int height, QImage& img);
     virtual Flags flags() const;
 private:
-    TmdbThumb movie(const QString& movie, const QString& year);
+    QNetworkAccessManager *m_networkManager;
 };
 
 #endif // MOVIETHUMBS_H

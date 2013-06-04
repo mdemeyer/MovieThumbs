@@ -37,7 +37,7 @@
 const QString TmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 QImage moviePoster;
 
-TmdbThumb::TmdbThumb(const QString &name, const QString &year)
+TmdbThumb::TmdbThumb(const QString &name, const QString &year, QNetworkAccessManager *qnam)
 {
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key", KEY);
@@ -46,21 +46,16 @@ TmdbThumb::TmdbThumb(const QString &name, const QString &year)
         urlQuery.addQueryItem("year", year);
     }
 
-    m_networkManager = new QNetworkAccessManager(this);
+    networkManager = qnam;
 
     QNetworkRequest request;
     request.setUrl(urlQuery);
     request.setRawHeader("Accept", "application/json");
 
-    QNetworkReply *reply = m_networkManager->get(request);
+    QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(queryFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
-}
-
-TmdbThumb::~TmdbThumb()
-{
-    delete m_networkManager;
 }
 
 QImage TmdbThumb::getPoster()
@@ -99,7 +94,7 @@ void TmdbThumb::queryFinished()
     request.setUrl(downloadUrl);
     request.setRawHeader("Accept", "application/json");
 
-    QNetworkReply *reply = m_networkManager->get(request);
+    QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
 }
 

@@ -32,10 +32,12 @@
 
 QImage poster;
 
-TvdbFetcher::TvdbFetcher(const QString &name)
+TvdbFetcher::TvdbFetcher(const QString &name, QNetworkAccessManager *qnam)
 {
     m_client = new Tvdb::Client(this);
     m_client->setApiKey("DA777D9ACDBB771E");
+
+    networkManager = qnam;
 
     connect(m_client, SIGNAL(finished(Tvdb::Series)),SLOT(foundSeries(Tvdb::Series)));
     connect(m_client, SIGNAL(multipleResultsFound(QList<Tvdb::Series>)),SLOT(foundMultipleSeries(QList<Tvdb::Series>)));
@@ -45,7 +47,6 @@ TvdbFetcher::TvdbFetcher(const QString &name)
 TvdbFetcher::~TvdbFetcher()
 {
     delete m_client;
-    delete m_networkManager;
 }
 
 QImage TvdbFetcher::getPoster()
@@ -64,12 +65,10 @@ void TvdbFetcher::foundSeries(const Tvdb::Series &series)
     QList<QUrl> posterList = series.posterUrls();
     QUrl downloadUrl = posterList[0];
 
-    m_networkManager = new QNetworkAccessManager(this);
-
     QNetworkRequest request;
     request.setUrl(downloadUrl);
 
-    QNetworkReply *reply = m_networkManager->get(request);
+    QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 }

@@ -21,24 +21,27 @@
 #ifndef TVDBFETCHER_H
 #define TVDBFETCHER_H
 
-#include <QtGui/QImage>
-#include <QtNetwork/QNetworkAccessManager>
-#include <QtNetwork/QNetworkReply>
-
 #include <tvdb/client.h>
 #include <tvdb/series.h>
+
+#include <QtGui/QImage>
+
+QT_BEGIN_NAMESPACE
+class QNetworkAccessManager;
+class QNetworkReply;
+QT_END_NAMESPACE
 
 class TvdbFetcher : public QObject
 {
     Q_OBJECT
 public:
-    explicit TvdbFetcher(const QString& name);
+    explicit TvdbFetcher(const QString& name, QNetworkAccessManager *qnam);
     ~TvdbFetcher();
     QImage getPoster();
 
 private:
     QImage poster;
-    QNetworkAccessManager *m_networkManager;
+    QNetworkAccessManager *networkManager;
     Tvdb::Client* m_client;
 
 private slots:

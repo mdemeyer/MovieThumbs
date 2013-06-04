@@ -29,6 +29,7 @@
 #include <QtCore/QEventLoop>
 #include <QtCore/QString>
 #include <QtGui/QImage>
+#include <QtNetwork/QNetworkAccessManager>
 
 #include <solid/networking.h>
 
@@ -42,10 +43,12 @@ extern "C"
 
 MovieThumbs::MovieThumbs()
 {
+    m_networkManager = new QNetworkAccessManager(this);
 }
 
 MovieThumbs::~MovieThumbs()
 {
+    delete m_networkManager;
 }
 
 bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
@@ -61,7 +64,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
     if(FileParser::isSeries(path)){
 #ifdef HAVE_TVDB
-        TvdbFetcher series(movieName);
+        TvdbFetcher series(movieName, m_networkManager);
 
         QEventLoop loop;
         QObject::connect(&series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
@@ -71,7 +74,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
         img = series.getPoster();
 #endif
     } else {
-        TmdbThumb movie(movieName, year);
+        TmdbThumb movie(movieName, year, m_networkManager);
 
         QEventLoop loop;
         QObject::connect(&movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
