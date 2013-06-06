@@ -21,24 +21,36 @@
 #ifndef MOVIETHUMBS_H
 #define MOVIETHUMBS_H
 
+#include "MovieThumbsConfig.h"
+
+#include "movieservice.h"
+#ifdef HAVE_TVDB
+#include "tvservice.h"
+#endif
+
+#include <QtCore/QObject>
 #include <kio/thumbcreator.h>
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
 QT_END_NAMESPACE
 
-#include "tmdbThumb.h"
-
 class MovieThumbs : public QObject, public ThumbCreator
 {
     Q_OBJECT
+
 public:
     MovieThumbs();
     virtual ~MovieThumbs();
     virtual bool create(const QString& path, int width, int height, QImage& img);
     virtual Flags flags() const;
+
 private:
     QNetworkAccessManager *m_networkManager;
+    MovieService *m_movie;
+#ifdef HAVE_TVDB
+    TvService *m_series;
+#endif
 };
 
 #endif // MOVIETHUMBS_H

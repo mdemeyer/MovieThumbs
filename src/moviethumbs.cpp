@@ -18,13 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "movieThumbs.h"
+#include "moviethumbs.h"
 #include "fileparser.h"
-#include "MovieThumbsConfig.h"
-
-#ifdef HAVE_TVDB
-#include "tvdbFetcher.h"
-#endif
 
 #include <QtCore/QEventLoop>
 #include <QtCore/QString>
@@ -44,11 +39,19 @@ extern "C"
 MovieThumbs::MovieThumbs()
 {
     m_networkManager = new QNetworkAccessManager(this);
+    m_movie = new MovieService(m_networkManager);
+#ifdef HAVE_TVDB
+    m_series = new TvService(m_networkManager);
+#endif
 }
 
 MovieThumbs::~MovieThumbs()
 {
     delete m_networkManager;
+    delete m_movie;
+#ifdef HAVE_TVDB
+    delete m_series;
+#endif
 }
 
 bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
@@ -60,28 +63,45 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     }
 
     QString year = FileParser::year(path);
-    QString movieName = FileParser::cleanName(path);
+    QString name = FileParser::cleanName(path);
+
+    QEventLoop loop;
 
     if(FileParser::isSeries(path)){
 #ifdef HAVE_TVDB
-        TvdbFetcher series(movieName, m_networkManager);
+        m_series->startSearch(name, year);
 
-        QEventLoop loop;
-        QObject::connect(&series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-        QObject::connect(&series, SIGNAL(downloadError()), &loop, SLOT(quit()));
+        connect(m_series, SIGNAL(posterFound()), &loop, SLOT(quit()));
+        connect(m_series, SIGNAL(downloadError()), &loop, SLOT(quit()));
+
         loop.exec();
 
-        img = series.getPoster();
+        if(m_series->hasPoster()) {
+            m_series->startDownload();
+
+            connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
+            loop.exec();
+
+            img = m_series->Poster();
+        }
+
 #endif
     } else {
-        TmdbThumb movie(movieName, year, m_networkManager);
+        m_movie->startSearch(name, year);
 
-        QEventLoop loop;
-        QObject::connect(&movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-        QObject::connect(&movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
+        connect(m_movie, SIGNAL(posterFound()), &loop, SLOT(quit()));
+        connect(m_movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
+
         loop.exec();
 
-        img = movie.getPoster();
+        if(m_movie->hasPoster()) {
+            m_movie->startDownload();
+
+            connect(m_movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
+            loop.exec();
+
+            img = m_movie->Poster();
+        }
     }
 
     return !img.isNull();
@@ -92,4 +112,4 @@ ThumbCreator::Flags MovieThumbs::flags() const
     return (Flags)(None);
 }
 
-#include "movieThumbs.moc"
+#include "moviethumbs.moc"

@@ -18,58 +18,45 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "tvservice.h"
+#ifndef POSTERSERVICE_H
+#define POSTERSERVICE_H
 
-#include <QtCore/QByteArray>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
-#include <QtCore/QUrl>
+#include <QtGui/QImage>
+#include <QtNetwork/QNetworkReply>
 
-#include <QtNetwork/QNetworkRequest>
+class QNetworkAccessManager;
+class QNetworkReply;
 
-#include <tvdb/client.h>
-#include <tvdb/series.h>
-
-const QString TvService::KEY = "DA777D9ACDBB771E";
-
-TvService::~TvService()
+class PosterService : public QObject
 {
-    delete m_client;
-}
+    Q_OBJECT
 
-void TvService::startSearch(const QString &name, const QString & /*year*/)
-{
-    m_client = new Tvdb::Client(this);
-    m_client->setApiKey(KEY);
+public:
+    PosterService(QNetworkAccessManager *qnam);
+    virtual ~PosterService();
 
-    connect(m_client, SIGNAL(finished(Tvdb::Series)),SLOT(foundSeries(Tvdb::Series)));
-    connect(m_client, SIGNAL(multipleResultsFound(QList<Tvdb::Series>)),SLOT(foundMultipleSeries(QList<Tvdb::Series>)));
-    m_client->getSeriesByName(name);
-}
+    virtual void startSearch(const QString& name, const QString& year) = 0;
+    void startDownload();
 
-void TvService::foundSeries(const Tvdb::Series &series)
-{
-    if(!series.isValid()){
-        qFatal("No valid series found");
-        emit downloadError();
-        return;
-    }
+    QImage Poster();
+    bool hasPoster();
 
-    QList<QUrl> posterList = series.posterUrls();
+protected:
+    void setUrl(QUrl url);
+    QNetworkAccessManager *networkManager;
 
-    if(posterList.isEmpty()){
-        //No posters to download
-        emit downloadError();
-        return;
-    }
+private:
+    QImage poster;
+    QUrl posterLink;
 
-    setUrl(posterList[0]);
-    emit posterFound();
-}
+private slots:
+    void downloadFinished();
+    void onNetworkError(QNetworkReply::NetworkError);
 
-void TvService::foundMultipleSeries(const QList<Tvdb::Series> &series)
-{
-    m_client->getSeriesById(series[0].id());
-}
+signals:
+    void posterDownloaded();
+    void downloadError();
+    void posterFound();
+};
 
-#include "tvservice.moc"
+#endif // POSTERSERVICE

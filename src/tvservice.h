@@ -18,41 +18,32 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef TVDBFETCHER_H
-#define TVDBFETCHER_H
+#ifndef TVSERVICE_H
+#define TVSERVICE_H
+
+#include <posterservice.h>
 
 #include <tvdb/client.h>
 #include <tvdb/series.h>
 
-#include <QtGui/QImage>
-
-QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
-class QNetworkReply;
-QT_END_NAMESPACE
 
-class TvdbFetcher : public QObject
+class TvService : public PosterService
 {
     Q_OBJECT
+
 public:
-    explicit TvdbFetcher(const QString& name, QNetworkAccessManager *qnam);
-    ~TvdbFetcher();
-    QImage getPoster();
+    TvService(QNetworkAccessManager *qnam) : PosterService(qnam) {}
+    ~TvService();
+    void startSearch(const QString& name, const QString& year);
 
 private:
-    QImage poster;
-    QNetworkAccessManager *networkManager;
+    static const QString KEY;
     Tvdb::Client* m_client;
 
 private slots:
     void foundSeries(const Tvdb::Series& series);
     void foundMultipleSeries(const QList<Tvdb::Series>& series);
-    bool downloadFinished();
-    void onNetworkError(QNetworkReply::NetworkError);
-
-signals:
-    void posterDownloaded();
-    void downloadError();
 };
 
-#endif // TVDBFETCHER_H
+#endif // TVSERVICE_H

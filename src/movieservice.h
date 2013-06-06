@@ -18,39 +18,28 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef TMDBTHUMB_H
-#define TMDBTHUMB_H
+#ifndef MOVIESERVICE_H
+#define MOVIESERVICE_H
 
-#include <QtGui/QImage>
-#include <QtNetwork/QNetworkReply>
+#include "posterservice.h"
 
-QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
-class QNetworkReply;
-QT_END_NAMESPACE
+class QSslError;
 
-class TmdbThumb : public QObject
+class MovieService : public PosterService
 {
     Q_OBJECT
 
 public:
-    TmdbThumb(const QString& name, const QString& year, QNetworkAccessManager *qnam);
-    QImage getPoster();
+    MovieService(QNetworkAccessManager *qnam) : PosterService(qnam) {}
+    void startSearch(const QString& name, const QString& year);
 
 private:
     static const QString KEY;
-    QNetworkAccessManager *networkManager;
-    QImage moviePoster;
 
 private slots:
-    void queryFinished();
-    bool downloadFinished();
-    void onNetworkError(QNetworkReply::NetworkError);
+    void searchFinished();
     void slotSslErrors(const QList<QSslError>& sslErrors);
-
-signals:
-    void posterDownloaded();
-    void downloadError();
 };
 
-#endif // TMDBTHUMB_H
+#endif // MOVIESERVICE_H

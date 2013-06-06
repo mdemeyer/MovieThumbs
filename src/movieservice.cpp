@@ -18,7 +18,7 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "tmdbThumb.h"
+#include "movieservice.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
@@ -34,10 +34,9 @@
 #include <qjson/parser.h>
 #include <stdio.h>
 
-const QString TmdbThumb::KEY = "5c8533aacb1fa275a5113d0728268d5a";
-QImage moviePoster;
+const QString MovieService::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 
-TmdbThumb::TmdbThumb(const QString &name, const QString &year, QNetworkAccessManager *qnam)
+void MovieService::startSearch(const QString &name, const QString &year)
 {
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key", KEY);
@@ -46,24 +45,17 @@ TmdbThumb::TmdbThumb(const QString &name, const QString &year, QNetworkAccessMan
         urlQuery.addQueryItem("year", year);
     }
 
-    networkManager = qnam;
-
     QNetworkRequest request;
     request.setUrl(urlQuery);
     request.setRawHeader("Accept", "application/json");
 
     QNetworkReply *reply = networkManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(queryFinished()));
+    connect(reply, SIGNAL(finished()), this, SLOT(searchFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
 }
 
-QImage TmdbThumb::getPoster()
-{
-    return moviePoster;
-}
-
-void TmdbThumb::queryFinished()
+void MovieService::searchFinished()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
@@ -76,47 +68,28 @@ void TmdbThumb::queryFinished()
     if (!ok) {
         qFatal("An error occurred during parsing");
         emit downloadError();
-        exit(1);
+        return;
     }
 
     QVariantList movies = result["results"].toList();
-    QStringList m_posterPath;
+    if(movies.isEmpty()) {
+        //No results found.
+        emit downloadError();
+        return;
+    }
 
+    QStringList posterPath;
     foreach(const QVariant &variant, movies) {
         QVariantMap poster = variant.toMap();
-        m_posterPath << (poster["poster_path"]).toString();
+        posterPath << (poster["poster_path"]).toString();
     }
 
     //The imgobject server does not support ssl so use normal http to download
-    QUrl downloadUrl("http://cf2.imgobject.com/t/p/w185/" + m_posterPath.at(0));
-
-    QNetworkRequest request;
-    request.setUrl(downloadUrl);
-    request.setRawHeader("Accept", "application/json");
-
-    QNetworkReply *reply = networkManager->get(request);
-    connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
+    setUrl("http://cf2.imgobject.com/t/p/w185/" + posterPath.at(0));
+    emit posterFound();
 }
 
-bool TmdbThumb::downloadFinished()
-{
-    QNetworkReply *downloadReply = qobject_cast<QNetworkReply *>(sender());
-    QByteArray data = downloadReply->readAll();
-    downloadReply->deleteLater();
-
-    moviePoster.loadFromData(data);
-
-    emit posterDownloaded();
-    return true;
-}
-
-void TmdbThumb::onNetworkError(QNetworkReply::NetworkError)
-{
-    qFatal("Download error");
-    emit downloadError();
-}
-
-void TmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
+void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach(const QSslError & error, sslErrors) {
         fprintf(stderr, "SSL error: %s\n", qPrintable(error.errorString()));
@@ -125,4 +98,4 @@ void TmdbThumb::slotSslErrors(const QList<QSslError> &sslErrors)
     emit downloadError();
 }
 
-#include "tmdbThumb.moc"
+#include "movieservice.moc"

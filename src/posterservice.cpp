@@ -18,58 +18,62 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "tvservice.h"
+#include "posterservice.h"
 
 #include <QtCore/QByteArray>
-#include <QtCore/QString>
-#include <QtCore/QStringList>
 #include <QtCore/QUrl>
 
 #include <QtNetwork/QNetworkRequest>
 
-#include <tvdb/client.h>
-#include <tvdb/series.h>
-
-const QString TvService::KEY = "DA777D9ACDBB771E";
-
-TvService::~TvService()
+PosterService::PosterService(QNetworkAccessManager *qnam)
 {
-    delete m_client;
+    networkManager = qnam;
 }
 
-void TvService::startSearch(const QString &name, const QString & /*year*/)
+PosterService::~PosterService()
 {
-    m_client = new Tvdb::Client(this);
-    m_client->setApiKey(KEY);
-
-    connect(m_client, SIGNAL(finished(Tvdb::Series)),SLOT(foundSeries(Tvdb::Series)));
-    connect(m_client, SIGNAL(multipleResultsFound(QList<Tvdb::Series>)),SLOT(foundMultipleSeries(QList<Tvdb::Series>)));
-    m_client->getSeriesByName(name);
 }
 
-void TvService::foundSeries(const Tvdb::Series &series)
+QImage PosterService::Poster()
 {
-    if(!series.isValid()){
-        qFatal("No valid series found");
-        emit downloadError();
-        return;
-    }
-
-    QList<QUrl> posterList = series.posterUrls();
-
-    if(posterList.isEmpty()){
-        //No posters to download
-        emit downloadError();
-        return;
-    }
-
-    setUrl(posterList[0]);
-    emit posterFound();
+    return poster;
 }
 
-void TvService::foundMultipleSeries(const QList<Tvdb::Series> &series)
+bool PosterService::hasPoster()
 {
-    m_client->getSeriesById(series[0].id());
+    return !posterLink.isEmpty();
 }
 
-#include "tvservice.moc"
+void PosterService::setUrl(QUrl url)
+{
+    posterLink = url;
+}
+
+void PosterService::startDownload()
+{
+    QNetworkRequest request;
+    request.setUrl(posterLink);
+    
+    QNetworkReply *reply = networkManager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
+}
+
+void PosterService::downloadFinished()
+{
+    QNetworkReply *downloadReply = qobject_cast<QNetworkReply *>(sender());
+    QByteArray data = downloadReply->readAll();
+    downloadReply->deleteLater();
+
+    poster.loadFromData(data);
+
+    emit posterDownloaded();
+}
+
+void PosterService::onNetworkError(QNetworkReply::NetworkError)
+{
+    qFatal("Download error");
+    emit downloadError();
+}
+
+#include "posterservice.moc"

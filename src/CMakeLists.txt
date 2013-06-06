@@ -5,10 +5,10 @@ configure_file(
     ${CMAKE_CURRENT_BINARY_DIR}/MovieThumbsConfig.h
     )
 
-set(MovieThumbs_SRCS fileparser.cpp movieThumbs.cpp tmdbThumb.cpp)
+set(MovieThumbs_SRCS fileparser.cpp moviethumbs.cpp movieservice.cpp posterservice.cpp)
 
 if(LibTvdb_FOUND)
-   set(MovieThumbs_SRCS ${MovieThumbs_SRCS} tvdbFetcher.cpp)
+   set(MovieThumbs_SRCS ${MovieThumbs_SRCS} tvservice.cpp)
    set(EXTRA_LIBS ${EXTRA_LIBS} ${LIBTVDB_LIBRARIES})
    set(HAVE_TVDB 1)
 endif(LibTvdb_FOUND)
