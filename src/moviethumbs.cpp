@@ -26,6 +26,7 @@
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
 
+#include <KDebug>
 #include <solid/networking.h>
 
 extern "C"
@@ -58,7 +59,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 {
     if(Solid::Networking::status() == Solid::Networking::Unconnected)
     {
-        qFatal("No network connection available");
+        kDebug() << "No network connection available";
         return false;
     }
 

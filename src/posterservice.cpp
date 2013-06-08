@@ -25,6 +25,8 @@
 
 #include <QtNetwork/QNetworkRequest>
 
+#include <KDebug>
+
 PosterService::PosterService(QNetworkAccessManager *qnam)
 {
     networkManager = qnam;
@@ -74,7 +76,7 @@ void PosterService::downloadFinished()
 
 void PosterService::onNetworkError(QNetworkReply::NetworkError)
 {
-    qFatal("Download error");
+    kDebug() << "Download error";
     emit downloadError();
 }
 

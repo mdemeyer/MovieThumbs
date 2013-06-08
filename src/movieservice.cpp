@@ -31,8 +31,10 @@
 
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QSslError>
+
+#include <KDebug>
+
 #include <qjson/parser.h>
-#include <stdio.h>
 
 const QString MovieService::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 
@@ -66,7 +68,7 @@ void MovieService::searchFinished()
 
     QVariantMap result = parser.parse(data, &ok).toMap();
     if (!ok) {
-        qFatal("An error occurred during parsing");
+        kDebug() <<"An error occurred during parsing";
         emit downloadError();
         return;
     }
@@ -92,7 +94,7 @@ void MovieService::searchFinished()
 void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach(const QSslError & error, sslErrors) {
-        fprintf(stderr, "SSL error: %s\n" << qPrintable(error.errorString()));
+        kDebug() << "SSL error: " << qPrintable(error.errorString());
     }
 
     emit downloadError();

@@ -28,6 +28,8 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
+#include <KDebug>
+
 /* REGEXSERIES
  * [0-9]+                 Can be one or two numbers.
  * (19|20)\\d{2}          year
@@ -146,10 +148,10 @@ QStringList FileParser::readBlacklist()
     QString tempWord;
 
     //Open the file
-    QFile file(dataDir + "/usr/share/MovieThumbs/blacklist");
+    QFile file("/usr/share/MovieThumbs/blacklist");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         //Something went wrong: return empty list
-        qFatal("blacklist file not found!");
+        kDebug() << "blacklist file not found!";
         return list;
     }
 

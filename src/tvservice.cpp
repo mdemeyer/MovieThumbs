@@ -27,6 +27,8 @@
 
 #include <QtNetwork/QNetworkRequest>
 
+#include <KDebug>
+
 #include <tvdb/client.h>
 #include <tvdb/series.h>
 
@@ -50,7 +52,7 @@ void TvService::startSearch(const QString &name, const QString & /*year*/)
 void TvService::foundSeries(const Tvdb::Series &series)
 {
     if(!series.isValid()){
-        qFatal("No valid series found");
+        kDebug() << "No valid series found";
         emit downloadError();
         return;
     }
