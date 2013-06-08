@@ -66,6 +66,9 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     QString name = FileParser::cleanName(path);
 
     QEventLoop loop;
+    connect(m_movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
+    connect(m_movie, SIGNAL(posterFound()), &loop, SLOT(quit()));
+    connect(m_movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
 
     if(FileParser::isSeries(path)){
 #ifdef HAVE_TVDB
@@ -73,33 +76,37 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
         connect(m_series, SIGNAL(posterFound()), &loop, SLOT(quit()));
         connect(m_series, SIGNAL(downloadError()), &loop, SLOT(quit()));
+        connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
 
         loop.exec();
 
+        if(!m_series->hasPoster()) {
+            //Try again with a cleaner filename
+            //TODO remove duplicate code
+            QString clean = FileParser::filterBlacklist(name);
+            m_series->startSearch(clean, year);
+            loop.exec();
+        }
         if(m_series->hasPoster()) {
             m_series->startDownload();
-
-            connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
             loop.exec();
-
             img = m_series->Poster();
         }
-
 #endif
-    } else {
+    }
+    if(img.isNull()) {
         m_movie->startSearch(name, year);
-
-        connect(m_movie, SIGNAL(posterFound()), &loop, SLOT(quit()));
-        connect(m_movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
-
         loop.exec();
 
+        if(!m_movie->hasPoster()) {
+            //Try again with a cleaner filename
+            QString clean = FileParser::filterBlacklist(name);
+            m_movie->startSearch(clean, year);
+            loop.exec();
+        }
         if(m_movie->hasPoster()) {
             m_movie->startDownload();
-
-            connect(m_movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
             loop.exec();
-
             img = m_movie->Poster();
         }
     }

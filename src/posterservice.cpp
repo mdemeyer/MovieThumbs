@@ -57,6 +57,8 @@ void PosterService::startDownload()
     QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
+
+    posterLink = QString();
 }
 
 void PosterService::downloadFinished()

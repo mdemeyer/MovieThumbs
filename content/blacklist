@@ -1,0 +1,162 @@
+# MovieThumbs blacklist
+# This is a list with words that should be removed from filenames when looking for posters
+# For speed reasons this list is only checked if a first search got no results
+
+# Put each word on a separate line, upper or lower case does not matter
+# Lines that begin with '#' are ignored
+
+# Torrent release groups. 
+# Some common names of release groups. This might be removed in future versions.
+# A very large list can be found here: http://filebot.net/data/release-groups.txt
+
+EVOLVE
+axxo
+JUSTiCE
+ASAP
+BAJSKORV
+C4TV
+D2V
+DiVERGE
+FTP
+KYR
+LMAO
+LOL
+MOMENTUM
+SYS
+TLA
+YesTV
+MiLLENiUM
+
+# Common subtitle languages. More have to be added.
+dutch
+swedish
+german
+english
+
+# These are some filters taken from XBMC
+# http://wiki.xbmc.org/index.php?title=Userdata/advancedsettings.xml#.3Ccleanstrings.3E
+part
+custom
+dvdivx
+fragment
+internal
+limited
+multisubs
+subs
+proper
+repack
+rerip
+retail
+r3
+r5
+bd5
+svcd
+readnfo
+nfofix
+unrated
+telesync
+telecine
+hrhdtv
+hrhd
+xxx
+www
+
+# Video source filters
+# Taken from filebot. Filebot is a great app to rename you movie collection, you should check it out ;)
+# http://www.filebot.net/
+CAMRip
+CAM
+PDVD
+TS
+TELESYNC
+PDVD
+PPVRip
+PPV
+DVDSCREENER
+SCREENER
+DVDSCR
+BDSCR
+SCR
+R4
+R5LINE
+R5
+xvidvd
+DVDRip
+DVDR
+DVD
+TVRip
+dsrip
+DSR
+PDTV
+SDTV
+hdtvrip
+HDTV
+DVBRip
+DVB
+DTHRip
+VODRip
+VODR
+BDRip
+BRRip
+BluRay
+BDR
+BRScreener
+BRScr
+HDDVD
+HDRip
+WorkPrint
+VHS
+VCD
+TELECINE
+WEBDL
+WEBRip
+ithd
+iTunesHD
+
+# Video formats
+# Also taken from filebot
+divx5
+DivX
+Xvid
+AVC
+x264
+h264
+3ivx
+mpg
+mpeg4
+mpeg
+mp3
+aac
+ac3
+dd20
+dd51
+2ch
+6ch
+DTSDMA
+DTSHD
+DTS
+TrueHD
+480i
+480p
+576p
+576i
+720i
+1080i
+7p
+720p
+18p
+1080p
+PAL
+NTSC
+
+# Some short words. Disabled because they might give a lot of false positives
+#hd
+#hq
+#ws
+#ts
+#tc
+#se
+#WS
+#HR
+#dc
+#fs

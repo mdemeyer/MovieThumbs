@@ -35,6 +35,7 @@ public:
 
     static QString cleanName(const QString& path);
     static QString year(const QString& name);
+    static QString filterBlacklist(const QString& name);
 
     static bool isSeries(const QString& name);
 
@@ -59,6 +60,12 @@ private:
      * This works for all years between 1900 and 2099.
      */
     static const QString REGEXYEAR;
+
+    /* List with words to filter out.
+     * Read from $XDG_DATA_DIRS/MovieThumbs/blacklist
+     */
+    static const QStringList BLACKLIST;
+    static QStringList readBlacklist();
 };
 
 #endif // FILEPARSER_H

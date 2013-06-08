@@ -92,7 +92,7 @@ void MovieService::searchFinished()
 void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach(const QSslError & error, sslErrors) {
-        fprintf(stderr, "SSL error: %s\n", qPrintable(error.errorString()));
+        fprintf(stderr, "SSL error: %s\n" << qPrintable(error.errorString()));
     }
 
     emit downloadError();

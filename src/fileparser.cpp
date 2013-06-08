@@ -20,10 +20,13 @@
 
 #include "fileparser.h"
 
+#include <QtCore/QDir>
+#include <QtCore/QFile>
 #include <QtCore/QFileInfo>
 #include <QtCore/QRegExp>
 #include <QtCore/QString>
 #include <QtCore/QStringList>
+#include <QtCore/QTextStream>
 
 /* REGEXSERIES
  * [0-9]+                 Can be one or two numbers.
@@ -56,6 +59,8 @@ const QString FileParser::REGEXBRACKETS = "\\([^\\(]*\\)|\\[([^]]+)\\]";
  * \d{2} 2 numbers [0-9]
  */
 const QString FileParser::REGEXYEAR = "(19|20)\\d{2}";
+
+const QStringList FileParser::BLACKLIST = readBlacklist();
 
 FileParser::FileParser()
 {
@@ -121,6 +126,43 @@ bool FileParser::isSeries(const QString &name)
         }
     }
     return false;
+}
+
+QString FileParser::filterBlacklist(const QString &name)
+{
+    QString clean = name;
+    //Remove blacklisted words
+    foreach(const QString& word, BLACKLIST) {
+        if(clean.contains(word, Qt::CaseInsensitive)) {
+            clean.remove(word, Qt::CaseInsensitive);
+        }
+    }
+    return clean;
+}
+
+QStringList FileParser::readBlacklist()
+{
+    QStringList list;
+    QString tempWord;
+
+    //Open the file
+    QFile file(dataDir + "/usr/share/MovieThumbs/blacklist");
+    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        //Something went wrong: return empty list
+        qFatal("blacklist file not found!");
+        return list;
+    }
+
+    //Read every line and store it in the list
+    QTextStream stream(&file);
+    while(!stream.atEnd())
+    {
+        tempWord = stream.readLine();
+        if(!tempWord.startsWith('#') && !tempWord.isEmpty()) {
+            list << tempWord.trimmed();
+        }
+    }
+    return list;
 }
 
 #include "fileparser.moc"

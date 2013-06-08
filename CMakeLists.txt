@@ -25,4 +25,5 @@ feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 add_definitions (${QT_DEFINITIONS} ${KDE4_DEFINITIONS})
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${KDE4_INCLUDES} ${QT_INCLUDES} ${PROJECT_BINARY_DIR})
 
-add_subdirectory( src )
+add_subdirectory(src)
+add_subdirectory(content)
