@@ -23,6 +23,8 @@
 
 #include <posterservice.h>
 
+#include <QtCore/QCache>
+
 #include <tvdb/client.h>
 #include <tvdb/series.h>
 
@@ -33,17 +35,22 @@ class TvService : public PosterService
     Q_OBJECT
 
 public:
-    TvService(QNetworkAccessManager *qnam) : PosterService(qnam) {}
+    TvService(QNetworkAccessManager *qnam);
     ~TvService();
     void startSearch(const QString& name, const QString& year);
+    bool duplicate(const QString& name, const QString& year);
 
 private:
     static const QString KEY;
     Tvdb::Client* m_client;
 
+    QString nameKey;
+    QCache<QString, QImage> cache;
+
 private slots:
     void foundSeries(const Tvdb::Series& series);
     void foundMultipleSeries(const QList<Tvdb::Series>& series);
+    void storeImage();
 };
 
 #endif // TVSERVICE_H

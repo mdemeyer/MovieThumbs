@@ -34,13 +34,27 @@
 
 const QString TvService::KEY = "DA777D9ACDBB771E";
 
+TvService::TvService(QNetworkAccessManager *qnam) : PosterService(qnam) {
+    connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
+}
+
 TvService::~TvService()
 {
     delete m_client;
 }
 
+bool TvService::duplicate(const QString &name, const QString & /*year*/)
+{
+    if(cache.contains(name)) {
+        copyImage(cache.object(name));
+        return true;
+    }
+    return false;
+}
+
 void TvService::startSearch(const QString &name, const QString & /*year*/)
 {
+    nameKey = name;
     m_client = new Tvdb::Client(this);
     m_client->setApiKey(KEY);
 
@@ -72,6 +86,11 @@ void TvService::foundSeries(const Tvdb::Series &series)
 void TvService::foundMultipleSeries(const QList<Tvdb::Series> &series)
 {
     m_client->getSeriesById(series[0].id());
+}
+
+void TvService::storeImage()
+{
+    cache.insert(nameKey, new QImage(Poster()));
 }
 
 #include "tvservice.moc"

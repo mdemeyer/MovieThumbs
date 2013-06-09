@@ -30,6 +30,7 @@
 PosterService::PosterService(QNetworkAccessManager *qnam)
 {
     networkManager = qnam;
+    hasPoster = false;
 }
 
 PosterService::~PosterService()
@@ -41,14 +42,10 @@ QImage PosterService::Poster()
     return poster;
 }
 
-bool PosterService::hasPoster()
-{
-    return !posterLink.isEmpty();
-}
-
 void PosterService::setUrl(QUrl url)
 {
     posterLink = url;
+    hasPoster = true;
 }
 
 void PosterService::startDownload()
@@ -60,7 +57,7 @@ void PosterService::startDownload()
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 
-    posterLink = QString();
+    hasPoster = false;
 }
 
 void PosterService::downloadFinished()
@@ -72,6 +69,11 @@ void PosterService::downloadFinished()
     poster.loadFromData(data);
 
     emit posterDownloaded();
+}
+
+void PosterService::copyImage(QImage *image)
+{
+    poster = *image;
 }
 
 void PosterService::onNetworkError(QNetworkReply::NetworkError)

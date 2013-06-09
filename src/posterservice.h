@@ -37,9 +37,10 @@ public:
 
     virtual void startSearch(const QString& name, const QString& year) = 0;
     void startDownload();
+    void copyImage(QImage* image);
 
     QImage Poster();
-    bool hasPoster();
+    bool hasPoster;
 
 protected:
     void setUrl(QUrl url);

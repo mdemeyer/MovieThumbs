@@ -50,7 +50,9 @@ private:
     MovieService *m_movie;
 #ifdef HAVE_TVDB
     TvService *m_series;
+    bool seriesDownload(const QString& name, const QString& year);
 #endif
+    bool movieDownload(const QString& name, const QString& year);
 };
 
 #endif // MOVIETHUMBS_H

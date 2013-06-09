@@ -65,54 +65,77 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
     QString year = FileParser::year(path);
     QString name = FileParser::cleanName(path);
+    QString cleanName = FileParser::filterBlacklist(name);
 
+#ifdef HAVE_TVDB
+    if(FileParser::isSeries(path)){
+        //Is the poster already in cache?
+        if(m_series->duplicate(name, year)) {
+            img = m_series->Poster();
+            return true;
+        }
+        //Retry cache with cleaner filename
+        if(m_series->duplicate(cleanName, year)) {
+            img = m_series->Poster();
+            return true;
+        }
+    
+        if(seriesDownload(name, year)) {
+            img = m_series ->Poster();
+        } else if(seriesDownload(cleanName, year)) {
+            img = m_series->Poster();
+        }
+
+        if(!img.isNull()) {
+            return true;
+        }
+    }
+#endif
+
+    if(movieDownload(name, year)) {
+        img = m_movie->Poster();
+    } else if(movieDownload(cleanName, year)) {
+        img = m_movie->Poster();
+    }
+    return !img.isNull();
+}
+
+#ifdef HAVE_TVDB
+bool MovieThumbs::seriesDownload(const QString &seriesName, const QString &year)
+{
+    QEventLoop loop;
+    connect(m_series, SIGNAL(posterFound()), &loop, SLOT(quit()));
+    connect(m_series, SIGNAL(downloadError()), &loop, SLOT(quit()));
+    connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
+
+    m_series->startSearch(seriesName, year);
+    loop.exec();
+
+    if(m_series->hasPoster) {
+        m_series->startDownload();
+        loop.exec();
+        return true;
+    }
+    return false;
+}
+#endif
+
+bool MovieThumbs::movieDownload(const QString &movieName, const QString &movieYear)
+{
     QEventLoop loop;
     connect(m_movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
     connect(m_movie, SIGNAL(posterFound()), &loop, SLOT(quit()));
     connect(m_movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
 
-    if(FileParser::isSeries(path)){
-#ifdef HAVE_TVDB
-        m_series->startSearch(name, year);
+    m_movie->startSearch(movieName, movieYear);
+    loop.exec();
 
-        connect(m_series, SIGNAL(posterFound()), &loop, SLOT(quit()));
-        connect(m_series, SIGNAL(downloadError()), &loop, SLOT(quit()));
-        connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
-
+    if(m_movie->hasPoster) {
+        m_movie->startDownload();
         loop.exec();
-
-        if(!m_series->hasPoster()) {
-            //Try again with a cleaner filename
-            //TODO remove duplicate code
-            QString clean = FileParser::filterBlacklist(name);
-            m_series->startSearch(clean, year);
-            loop.exec();
-        }
-        if(m_series->hasPoster()) {
-            m_series->startDownload();
-            loop.exec();
-            img = m_series->Poster();
-        }
-#endif
+        return true;
     }
-    if(img.isNull()) {
-        m_movie->startSearch(name, year);
-        loop.exec();
-
-        if(!m_movie->hasPoster()) {
-            //Try again with a cleaner filename
-            QString clean = FileParser::filterBlacklist(name);
-            m_movie->startSearch(clean, year);
-            loop.exec();
-        }
-        if(m_movie->hasPoster()) {
-            m_movie->startDownload();
-            loop.exec();
-            img = m_movie->Poster();
-        }
-    }
-
-    return !img.isNull();
+    return false;
 }
 
 ThumbCreator::Flags MovieThumbs::flags() const
