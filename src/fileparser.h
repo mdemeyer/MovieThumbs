@@ -42,7 +42,11 @@ public:
 private:
     /* Regex to find series. We look for these strings:
      * S00E00: S and E can be lower or uppercase. 00 can be any number
+     * Ep.00 Episode number
+     * 1x00
+     * Part or Pt.
      * yyyy-mm-dd: Full date. This is also a common naming scheme.
+     * dd-dd-yyyy: Full date reversed.
      * [xxxxxxxx]: 8 character long checksum. Commonly used with anime.
      */
     static const QStringList REGEXSERIES;

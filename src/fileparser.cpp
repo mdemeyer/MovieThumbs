@@ -36,12 +36,17 @@
  * 0[1-9] | 1[012]        Number from 01 to 09 OR 10 to 12 (month)
  * (0[1-9]|[12]\\d)|3[01] Number 01 - 31 (day)
  * [_- .]                 Date separator
+ * (?i)                   Ignore case
  * [\\[|\\(]              '[' or '['
  * [a-zA-Z0-9\\s]{8}      8 alphanumeric chars
  */
 const QStringList FileParser::REGEXSERIES = QStringList()
-                    << "[sS]([0-9]+)[eE]([0-9]+)" // S00E00
+                    << "[sS]([0-9]+)[_- .]*[eE]([0-9]+)(.*)" // S00E00
+                    << "[_- .][Ee][Pp][_- .]?([0-9]+)(.*)" // Ep.00
+                    << "[_- .]([0-9]+)x[0-9]{2}[_- .]" // blah.100
+                    << "[_- .](?i)p(?:ar)?t[_- .]" //Part Pt.
                     << "(19|20)\\d{2}[_- .]((0[1-9])|(1[012]))[_- .]((0[1-9]|[12]\\d)|3[01])"  // yyyy-mm-dd
+                    << "((0[1-9]|[12]\\d)|3[01])[_- .]((0[1-9])|(1[012]))[_- .](19|20)\\d{2}"  // dd-mm-yyyy
                     << ("[\\[|\\(][a-zA-Z0-9]{8}[\\]|\\)]"); //[abCD5678] or (abCD5678)
 
 /* REGEXALPHANUMERIC
@@ -98,7 +103,7 @@ QString FileParser::cleanName(const QString &path)
         regex.setPattern(REGEXYEAR);
         clean.remove(regex);
 
-    return clean.trimmed();
+    return clean.simplified();
 }
 
 QString FileParser::year(const QString &name)
@@ -139,7 +144,7 @@ QString FileParser::filterBlacklist(const QString &name)
             clean.remove(word, Qt::CaseInsensitive);
         }
     }
-    return clean;
+    return clean.simplified();
 }
 
 QStringList FileParser::readBlacklist()
