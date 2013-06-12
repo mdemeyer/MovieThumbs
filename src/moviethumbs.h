@@ -21,12 +21,8 @@
 #ifndef MOVIETHUMBS_H
 #define MOVIETHUMBS_H
 
-#include "MovieThumbsConfig.h"
-
 #include "movieservice.h"
-#ifdef HAVE_TVDB
 #include "tvservice.h"
-#endif
 
 #include <QtCore/QObject>
 #include <kio/thumbcreator.h>
@@ -48,10 +44,9 @@ public:
 private:
     QNetworkAccessManager *m_networkManager;
     MovieService *m_movie;
-#ifdef HAVE_TVDB
     TvService *m_series;
+
     bool seriesDownload(const QString& name, const QString& year);
-#endif
     bool movieDownload(const QString& name, const QString& year);
 };
 

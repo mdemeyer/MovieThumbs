@@ -41,18 +41,14 @@ MovieThumbs::MovieThumbs()
 {
     m_networkManager = new QNetworkAccessManager(this);
     m_movie = new MovieService(m_networkManager);
-#ifdef HAVE_TVDB
     m_series = new TvService(m_networkManager);
-#endif
 }
 
 MovieThumbs::~MovieThumbs()
 {
     delete m_networkManager;
     delete m_movie;
-#ifdef HAVE_TVDB
     delete m_series;
-#endif
 }
 
 bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
@@ -67,7 +63,6 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     QString name = FileParser::cleanName(path);
     QString cleanName = FileParser::filterBlacklist(name);
 
-#ifdef HAVE_TVDB
     if(FileParser::isSeries(path)){
         //Is the poster already in cache?
         if(m_series->duplicate(name, year)) {
@@ -79,7 +74,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
             img = m_series->Poster();
             return true;
         }
-    
+
         if(seriesDownload(name, year)) {
             img = m_series ->Poster();
         } else if(seriesDownload(cleanName, year)) {
@@ -90,7 +85,6 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
             return true;
         }
     }
-#endif
 
     if(movieDownload(name, year)) {
         img = m_movie->Poster();
@@ -100,7 +94,6 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     return !img.isNull();
 }
 
-#ifdef HAVE_TVDB
 bool MovieThumbs::seriesDownload(const QString &seriesName, const QString &year)
 {
     QEventLoop loop;
@@ -118,7 +111,6 @@ bool MovieThumbs::seriesDownload(const QString &seriesName, const QString &year)
     }
     return false;
 }
-#endif
 
 bool MovieThumbs::movieDownload(const QString &movieName, const QString &movieYear)
 {

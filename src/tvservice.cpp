@@ -24,13 +24,11 @@
 #include <QtCore/QString>
 #include <QtCore/QStringList>
 #include <QtCore/QUrl>
+#include <QtCore/QXmlStreamReader>
 
 #include <QtNetwork/QNetworkRequest>
 
 #include <KDebug>
-
-#include <tvdb/client.h>
-#include <tvdb/series.h>
 
 const QString TvService::KEY = "DA777D9ACDBB771E";
 
@@ -40,7 +38,7 @@ TvService::TvService(QNetworkAccessManager *qnam) : PosterService(qnam) {
 
 TvService::~TvService()
 {
-    delete m_client;
+
 }
 
 bool TvService::duplicate(const QString &name, const QString & /*year*/)
@@ -55,37 +53,78 @@ bool TvService::duplicate(const QString &name, const QString & /*year*/)
 void TvService::startSearch(const QString &name, const QString & /*year*/)
 {
     nameKey = name;
-    m_client = new Tvdb::Client(this);
-    m_client->setApiKey(KEY);
 
-    connect(m_client, SIGNAL(finished(Tvdb::Series)),SLOT(foundSeries(Tvdb::Series)));
-    connect(m_client, SIGNAL(multipleResultsFound(QList<Tvdb::Series>)),SLOT(foundMultipleSeries(QList<Tvdb::Series>)));
-    m_client->getSeriesByName(name);
+    QUrl urlQuery("http://thetvdb.com/api/GetSeries.php");
+    urlQuery.addQueryItem("seriesname", name);
+
+    QNetworkRequest request;
+    request.setUrl(urlQuery);
+
+    QNetworkReply *reply = networkManager->get(request);
+    connect(reply, SIGNAL(finished()), this, SLOT(foundSeries()));
+    connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 }
 
-void TvService::foundSeries(const Tvdb::Series &series)
+void TvService::foundSeries()
 {
-    if(!series.isValid()){
-        kDebug() << "No valid series found";
-        emit downloadError();
-        return;
+    QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
+    QByteArray data = queryReply->readAll();
+    queryReply->deleteLater();
+
+    QXmlStreamReader xmlStream(data);
+
+    //Read the seriesid
+    while(!xmlStream.atEnd()) {
+        xmlStream.readNext();
+
+        if(xmlStream.name().toString() == "seriesid") {
+            // http://thetvdb.com/api/<apikey>/series/<seriesid>/banners.xml
+            QUrl bannerQuery("http://thetvdb.com/api/" + KEY + "/series/" + xmlStream.readElementText() + "/banners.xml");
+
+            QNetworkRequest request;
+            request.setUrl(bannerQuery);
+
+            QNetworkReply *reply = networkManager->get(request);
+            connect(reply, SIGNAL(finished()), this, SLOT(foundBanners()));
+            connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
+            return;
+        }
     }
 
-    QList<QUrl> posterList = series.posterUrls();
-
-    if(posterList.isEmpty()){
-        //No posters to download
-        emit downloadError();
-        return;
-    }
-
-    setUrl(posterList[0]);
-    emit posterFound();
+    //The cake is a lie!
+    kDebug() <<"No valid series found";
+    emit downloadError();
+    return;
 }
 
-void TvService::foundMultipleSeries(const QList<Tvdb::Series> &series)
+void TvService::foundBanners()
 {
-    m_client->getSeriesById(series[0].id());
+    QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
+    QByteArray data = queryReply->readAll();
+    queryReply->deleteLater();
+
+    QXmlStreamReader xmlStream(data);
+
+    QString url = QString();
+
+    //Read the bannerLink
+    while(!xmlStream.atEnd()) {
+        xmlStream.readNext();
+
+        if(xmlStream.name().toString() == "BannerPath") {
+            url = xmlStream.readElementText();
+        }
+        if(xmlStream.name().toString() == "BannerType") {
+            //If the banner type is a poster, break
+            if(xmlStream.readElementText() == "poster") {
+                setUrl("http://thetvdb.com/banners/" + url);
+                emit posterFound();
+                return;
+            }
+        }
+    }
+    //If we are here all hope is lost.
+    emit downloadError();
 }
 
 void TvService::storeImage()
