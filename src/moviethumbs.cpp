@@ -63,8 +63,7 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     QString year = FileParser::year(baseName);
     QString name = FileParser::cleanName(baseName);
 
-    //TODO Only filter the name if the first search failed
-    QString cleanName = FileParser::filterBlacklist(name);
+    QString filteredName;
 
     if(FileParser::isSeries(baseName)){
         //Is the poster already in cache?
@@ -73,14 +72,17 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
             return true;
         }
         //Retry cache with cleaner filename
-        if(m_series->duplicate(cleanName, year)) {
+        if(filteredName.isEmpty()){
+            filteredName = FileParser::filterBlacklist(name);
+        }
+        if(m_series->duplicate(filteredName, year)) {
             img = m_series->Poster();
             return true;
         }
 
         if(seriesDownload(name, year)) {
             img = m_series ->Poster();
-        } else if(seriesDownload(cleanName, year)) {
+        } else if(seriesDownload(filteredName, year)) {
             img = m_series->Poster();
         }
 
@@ -91,8 +93,14 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
 
     if(movieDownload(name, year)) {
         img = m_movie->Poster();
-    } else if(movieDownload(cleanName, year)) {
-        img = m_movie->Poster();
+    } else {
+        //Retry search with cleaner filename
+        if(filteredName.isEmpty()){
+            filteredName = FileParser::filterBlacklist(name);
+        }
+        if(movieDownload(filteredName, year)) {
+            img = m_movie->Poster();
+        }
     }
     return !img.isNull();
 }
