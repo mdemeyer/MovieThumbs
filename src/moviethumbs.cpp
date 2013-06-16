@@ -59,11 +59,14 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
         return false;
     }
 
-    QString year = FileParser::year(path);
-    QString name = FileParser::cleanName(path);
+    QString baseName = FileParser::baseName(path);
+    QString year = FileParser::year(baseName);
+    QString name = FileParser::cleanName(baseName);
+
+    //TODO Only filter the name if the first search failed
     QString cleanName = FileParser::filterBlacklist(name);
 
-    if(FileParser::isSeries(path)){
+    if(FileParser::isSeries(baseName)){
         //Is the poster already in cache?
         if(m_series->duplicate(name, year)) {
             img = m_series->Poster();

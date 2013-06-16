@@ -33,7 +33,8 @@ public:
     FileParser();
     ~FileParser();
 
-    static QString cleanName(const QString& path);
+    static QString baseName(const QString& path);
+    static QString cleanName(const QString& name);
     static QString year(const QString& name);
     static QString filterBlacklist(const QString& name);
 
@@ -51,10 +52,13 @@ private:
      */
     static const QStringList REGEXSERIES;
 
-    /* Regex to detect any non alphanumerical characters.
-     * This is to remove dots and underscores from filenames.
+    /* Regex to detect separators in filenames.
      */
-    static const QString REGEXALPHANUMERIC;
+    static const QString REGEXSEPARATORS;
+
+    /* Regex to detect special characters.
+     */
+    static const QString REGEXSPECIAL;
 
     /* Regex to select everything between brackets. Both () and []
      */
