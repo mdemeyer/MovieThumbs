@@ -59,7 +59,7 @@ const QString FileParser::REGEXSEPARATORS = "[_\\-.]";
  * \W Matches a non-word character.
  * Thank you Giuseppe Calà
  */
-const QString FileParser::REGEXSPECIAL = "\\W";
+const QString FileParser::REGEXSPECIAL = "[^\\w\\s]";
 
 /* REGEXBRACKETS
  * \\(               Include opening bracket
