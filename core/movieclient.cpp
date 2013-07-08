@@ -26,39 +26,22 @@
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
 
-#include <KDebug>
-#include <solid/networking.h>
-
-extern "C"
-{
-    KDE_EXPORT ThumbCreator *new_creator()
-    {
-        return new MovieThumbs;
-    }
-}
-
-MovieThumbs::MovieThumbs()
+MovieClient::MovieClient()
 {
     m_networkManager = new QNetworkAccessManager(this);
     m_movie = new MovieService(m_networkManager);
     m_series = new TvService(m_networkManager);
 }
 
-MovieThumbs::~MovieThumbs()
+MovieClient::~MovieClient()
 {
     delete m_networkManager;
     delete m_movie;
     delete m_series;
 }
 
-bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
+void MovieClient::addSearch(const QString &path)
 {
-    if(Solid::Networking::status() == Solid::Networking::Unconnected)
-    {
-        kDebug() << "No network connection available";
-        return false;
-    }
-
     QString baseName = FileParser::baseName(path);
     QString year = FileParser::year(baseName);
     QString name = FileParser::cleanName(baseName);
@@ -68,44 +51,38 @@ bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
     if(FileParser::isSeries(baseName)){
         //Is the poster already in cache?
         if(m_series->duplicate(name, year)) {
-            img = m_series->Poster();
-            return true;
+            emit slotPosterFinished(m_series->Poster());
         }
         //Retry cache with cleaner filename
         if(filteredName.isEmpty()){
             filteredName = FileParser::filterBlacklist(name);
         }
         if(m_series->duplicate(filteredName, year)) {
-            img = m_series->Poster();
-            return true;
+            emit slotPosterFinished(m_series->Poster());
         }
 
         if(seriesDownload(name, year)) {
-            img = m_series ->Poster();
+            emit slotPosterFinished(m_series->Poster());
         } else if(seriesDownload(filteredName, year)) {
-            img = m_series->Poster();
-        }
-
-        if(!img.isNull()) {
-            return true;
+            emit slotPosterFinished(m_series->Poster());
         }
     }
 
     if(movieDownload(name, year)) {
-        img = m_movie->Poster();
+        emit slotPosterFinished(m_movie->Poster());
     } else {
         //Retry search with cleaner filename
         if(filteredName.isEmpty()){
             filteredName = FileParser::filterBlacklist(name);
-        }
+        }+
         if(movieDownload(filteredName, year)) {
-            img = m_movie->Poster();
+            emit slotPosterFinished(m_movie->Poster());
         }
     }
-    return !img.isNull();
+//TODO    return !img.isNull();
 }
 
-bool MovieThumbs::seriesDownload(const QString &seriesName, const QString &year)
+bool MovieClient::seriesDownload(const QString &seriesName, const QString &year)
 {
     QEventLoop loop;
     connect(m_series, SIGNAL(posterFound()), &loop, SLOT(quit()));
@@ -123,7 +100,7 @@ bool MovieThumbs::seriesDownload(const QString &seriesName, const QString &year)
     return false;
 }
 
-bool MovieThumbs::movieDownload(const QString &movieName, const QString &movieYear)
+bool MovieClient::movieDownload(const QString &movieName, const QString &movieYear)
 {
     QEventLoop loop;
     connect(m_movie, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
@@ -141,9 +118,4 @@ bool MovieThumbs::movieDownload(const QString &movieName, const QString &movieYe
     return false;
 }
 
-ThumbCreator::Flags MovieThumbs::flags() const
-{
-    return (Flags)(None);
-}
-
-#include "moviethumbs.moc"
+#include "movieclient.moc"

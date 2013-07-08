@@ -18,28 +18,27 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef MOVIETHUMBS_H
-#define MOVIETHUMBS_H
+#ifndef MOVIECLIENT_H
+#define MOVIECLIENT_H
 
 #include "movieservice.h"
 #include "tvservice.h"
 
 #include <QtCore/QObject>
-#include <kio/thumbcreator.h>
 
 QT_BEGIN_NAMESPACE
 class QNetworkAccessManager;
 QT_END_NAMESPACE
 
-class MovieThumbs : public QObject, public ThumbCreator
+class MovieClient : public QObject
 {
     Q_OBJECT
 
 public:
-    MovieThumbs();
-    virtual ~MovieThumbs();
-    virtual bool create(const QString& path, int width, int height, QImage& img);
-    virtual Flags flags() const;
+    explicit MovieClient();
+    virtual ~MovieClient();
+
+    void addSearch(const QString& path);
 
 private:
     QNetworkAccessManager *m_networkManager;
@@ -48,6 +47,9 @@ private:
 
     bool seriesDownload(const QString& name, const QString& year);
     bool movieDownload(const QString& name, const QString& year);
+
+signals:
+    slotPosterFinished(const QImage& poster);
 };
 
-#endif // MOVIETHUMBS_H
+#endif // MOVIECLIENT_H
