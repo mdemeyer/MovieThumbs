@@ -25,7 +25,7 @@
 
 #include <QtNetwork/QNetworkRequest>
 
-#include <KDebug>
+#include <QDebug>
 
 PosterService::PosterService(QNetworkAccessManager *qnam)
 {
@@ -52,7 +52,7 @@ void PosterService::startDownload()
 {
     QNetworkRequest request;
     request.setUrl(posterLink);
-    
+
     QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
@@ -78,7 +78,7 @@ void PosterService::copyImage(QImage *image)
 
 void PosterService::onNetworkError(QNetworkReply::NetworkError)
 {
-    kDebug() << "Download error";
+    qDebug() << "Download error";
     emit downloadError();
 }
 

@@ -32,7 +32,7 @@
 #include <QtNetwork/QNetworkRequest>
 #include <QtNetwork/QSslError>
 
-#include <KDebug>
+#include <QDebug>
 
 #include <qjson/parser.h>
 
@@ -68,7 +68,7 @@ void MovieService::searchFinished()
 
     QVariantMap result = parser.parse(data, &ok).toMap();
     if (!ok) {
-        kDebug() <<"An error occurred during parsing";
+        qDebug() <<"An error occurred during parsing";
         emit downloadError();
         return;
     }
@@ -94,7 +94,7 @@ void MovieService::searchFinished()
 void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach(const QSslError & error, sslErrors) {
-        kDebug() << "SSL error: " << qPrintable(error.errorString());
+        qDebug() << "SSL error: " << qPrintable(error.errorString());
     }
 
     emit downloadError();

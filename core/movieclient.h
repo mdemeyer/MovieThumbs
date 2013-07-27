@@ -49,7 +49,7 @@ private:
     bool movieDownload(const QString& name, const QString& year);
 
 signals:
-    slotPosterFinished(const QImage& poster);
+    void slotPosterFinished(const QImage& poster);
 };
 
 #endif // MOVIECLIENT_H

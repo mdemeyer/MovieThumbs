@@ -28,7 +28,7 @@
 #include <QtCore/QStringList>
 #include <QtCore/QTextStream>
 
-#include <KDebug>
+#include <QDebug>
 
 /* REGEXSERIES
  * [0-9]+                 Can be one or two numbers.
@@ -175,7 +175,7 @@ QStringList FileParser::readBlacklist()
     QFile file("/usr/share/MovieThumbs/blacklist");
     if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         //Something went wrong: return empty list
-        kDebug() << "blacklist file not found!";
+        qDebug() << "blacklist file not found!";
         return list;
     }
 

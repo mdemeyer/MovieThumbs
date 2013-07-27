@@ -28,7 +28,7 @@
 
 #include <QtNetwork/QNetworkRequest>
 
-#include <KDebug>
+#include <QDebug>
 
 const QString TvService::KEY = "DA777D9ACDBB771E";
 
@@ -92,7 +92,7 @@ void TvService::foundSeries()
     }
 
     //The cake is a lie!
-    kDebug() <<"No valid series found";
+    qDebug() <<"No valid series found";
     emit downloadError();
     return;
 }

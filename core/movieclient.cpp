@@ -18,7 +18,7 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "moviethumbs.h"
+#include "movieclient.h"
 #include "fileparser.h"
 
 #include <QtCore/QEventLoop>
@@ -74,7 +74,7 @@ void MovieClient::addSearch(const QString &path)
         //Retry search with cleaner filename
         if(filteredName.isEmpty()){
             filteredName = FileParser::filterBlacklist(name);
-        }+
+        }
         if(movieDownload(filteredName, year)) {
             emit slotPosterFinished(m_movie->Poster());
         }
