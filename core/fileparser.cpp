@@ -66,7 +66,7 @@ const QString FileParser::REGEXSPECIAL = "[^\\w\\s]";
  * [^\\(]            Start match
  * *\\)              Match everyting until closing bracket
  */
-const QString FileParser::REGEXBRACKETS = "\\([^\\(]*\\)|\\[([^]]+)\\]";
+const QString FileParser::REGEXBRACKETS = "\\([{^\\(]*\\)|\\[([^]]+)\\]|{([^}]+)}";
 
 /* REGEXYEAR
  * \(19|20) number starting with 19 OR 20
