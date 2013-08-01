@@ -68,7 +68,7 @@ void Tools::savePoster(const QImage poster)
 
 void Tools::createThumbnail(const QString &input, const QString &output, int size)
 {
-    outputFile = output;  
+    outputFile = output;
 
     MovieClient *thumb = new MovieClient();
     connect(thumb, SIGNAL(slotPosterFinished(const QImage&)), this , SLOT(savePoster(const QImage&)));

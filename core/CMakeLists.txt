@@ -6,7 +6,13 @@ find_package(Qt4 REQUIRED)
 find_package(QJSON REQUIRED)
 
 add_definitions (${QT_DEFINITIONS})
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES} ${qjson_INCLUDE_DIR} ${QJSON_INCLUDE_DIR})
+include_directories(${CMAKE_SOURCE_DIR}
+    ${CMAKE_CURRENT_BINARY_DIR}
+    ${QT_INCLUDES}
+    ${qjson_INCLUDE_DIR}
+    ${QJSON_INCLUDE_DIR}
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    )
 
 set(MOVIETHUMBS_CORE_SRCS
     fileparser.cpp

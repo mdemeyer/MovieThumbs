@@ -16,7 +16,7 @@ QT4_WRAP_CPP(MOVIETHUMBS_HEADERS_MOC ${MOVIETHUMBS_TOOLS_HEADERS})
 
 add_executable(moviethumbs ${MOVIETHUMBS_TOOLS_SRCS} ${MOVIETHUMBS_HEADERS_MOC})
 
-target_link_libraries(moviethumbs 
+target_link_libraries(moviethumbs
    ${QT_QTCORE_LIBRARY}
    ${QT_QTGUI_LIBRARY}
    ${MOVIETHUMBS_LIBRARY}
