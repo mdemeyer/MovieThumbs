@@ -3,9 +3,10 @@ project(MovieThumbs-Core)
 cmake_minimum_required(VERSION 2.8.0)
 
 find_package(Qt4 REQUIRED)
+find_package(QJSON REQUIRED)
 
 add_definitions (${QT_DEFINITIONS})
-include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES})
+include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES} ${qjson_INCLUDE_DIR} ${QJSON_INCLUDE_DIR})
 
 set(MOVIETHUMBS_CORE_SRCS
     fileparser.cpp
@@ -13,6 +14,14 @@ set(MOVIETHUMBS_CORE_SRCS
     movieservice.cpp
     posterservice.cpp
     tvservice.cpp
+    )
+
+set(MOVIETHUMBS_INCLUDES
+    fileparser.h
+    movieclient.h
+    movieservice.h
+    posterservice.h
+    tvservice.h
     )
 
 QT4_AUTOMOC(${MOVIETHUMBS_CORE_SRCS})
@@ -28,3 +37,4 @@ target_link_libraries(moviethumbs
    )
 
 install(TARGETS moviethumbs LIBRARY DESTINATION lib)
+install(FILES ${MOVIETHUMBS_INCLUDES} DESTINATION include/libmoviethumbs)
