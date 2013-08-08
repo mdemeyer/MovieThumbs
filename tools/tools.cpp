@@ -60,10 +60,9 @@ void Tools::printHelp()
 
 void Tools::savePoster(const QImage poster)
 {
-    if(!poster.save(outputFile, 0, 0)) {
+    if(!poster.save(outputFile, "PNG", 0)) {
         cerr << "Cannot save file!" << endl;
     }
-//     cout << "File saved" << endl;
 }
 
 void Tools::createThumbnail(const QString &input, const QString &output, int size)

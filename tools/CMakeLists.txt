@@ -23,3 +23,4 @@ target_link_libraries(moviethumbs
    )
 
 install(TARGETS moviethumbs RUNTIME DESTINATION bin)
+install(FILES gnome-moviethumbs.thumbnailer DESTINATION /usr/share/thumbnailers)
