@@ -1,16 +1,32 @@
-TODO
-========
+Bugs
+================================
+* Remove Eventloop from movieClient
+* Make fileparser non static
+* Remove unneeded tools.cpp and tools.h file (figure out moc for main.cpp only)
+* Size parameter from cli is not used
+* No versioning for libs
 
-#Short term
-*Better error handling
-*Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
 
-#Long term
-*Move tmdbThumb to external library (Qt Framework?)
-*Add configuration option to switch between available posters
-*Include upstream if people want it
-*Merge ffmpeg and mplayer thumbnail
+Features
+================================
+* Better error handling
+* Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
+* Add configuration option to switch between available posters
+* Look for embedded posters in matroska files
+* Search for local files (poster.png)
+* Unit tests for core
 
-#Qt 5
-*use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
-*use new regex engine
+
+Qt 5
+================================
+* use built in JSON parser (http://doc-snapshot.qt-project.org/5.0/json.html)
+* use new regex engine
+
+
+Project politics
+================================
+* Include upstream if people want it
+* Merge ffmpeg and mplayer thumbnail
+* Website?
+* add on gnome-look.org
+

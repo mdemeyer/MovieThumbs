@@ -1,31 +1,24 @@
 How to install MovieThumbs.
 ================================
 Needed libs:
-    KDE 4.10
+    Qt 4.8
     QJSON
-    LibTvdb (optional)
+
+    KDE 4.10 (only for kde)
+
+First install the core moviethumbs lib and then build the kde and/or tools package
 
 
-LibTvdb http://libtvdb.sourceforge.net/
+Install MOVIETHUMBS CORE
 ================================
-Install from distro package or download here: http://sourceforge.net/projects/libtvdb/
-This library is needed if you want posters from series.
-
-
-Install MOVIETHUMBS
-================================
-Extract the tarball folder
-    tar -zxvf MovieThumbs-0.2.0.tar.gz
-    cd MovieThumbs-0.2.0/
-
-Make a build location 
+Make a build location
     mkdir build && cd build
 
 Use CMake to check all dependancies
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release ..
+    cmake -DCMAKE_BUILD_TYPE=Release <path to core dir>
     
 Or use debugfull for testing
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Debugfull ..
+    cmake -DCMAKE_BUILD_TYPE=Debugfull <path to core dir>
     
 Build
     make
@@ -33,7 +26,43 @@ Build
 Install with root
     sudo make install
 
+
+Install MOVIETHUMBS KDE (optional)
+================================
+Make a build location
+    mkdir build && cd build
+
+Use CMake to check all dependancies
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release <path to core dir>
+
+Build
+    make
+
+Install with root
+    sudo make install
+
+
+Install MOVIETHUMBS TOOLS (optional)
+================================
+Make a build location
+    mkdir build && cd build
+
+Use CMake to check all dependancies
+    cmake -DCMAKE_BUILD_TYPE=Release <path to core dir>
+
+Build
+    make
+
+Install with root
+    sudo make install
+
+GNOME 2 users can run gnome2-install.sh to set the correct GConf keys
+   chmod +x gnome2-install.sh
+   ./gnome2-install.sh
+
+
 Uninstall
 ================================
-In the same build directory:
+In the build directory:
     sudo make uninstall
+
