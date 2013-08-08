@@ -171,7 +171,7 @@ QString FileParser::filterBlacklist(const QString &name)
     //Remove blacklisted words
     foreach(const QString& word, BLACKLIST) {
         if(clean.contains(word, Qt::CaseInsensitive)) {
-            clean.remove(word, Qt::CaseInsensitive);
+            clean.truncate(clean.indexOf(word, 0, Qt::CaseInsensitive));
         }
     }
     return clean.simplified();
