@@ -75,6 +75,12 @@ const QString FileParser::REGEXBRACKETS = "\\([^\\(]*\\)|\\[([^]]+)\\]|\\{([^}]+
  */
 const QString FileParser::REGEXYEAR = "(19|20)\\d{2}";
 
+/* REGEXCD.
+ * \\s* zero or more whitespaces
+ * \\d+ 1 or more numbers
+ */
+const QString FileParser::REGEXCD = "[C|c][D|d]\\s*\\d+";
+
 const QStringList FileParser::BLACKLIST = readBlacklist();
 
 FileParser::FileParser()
@@ -156,6 +162,10 @@ QString FileParser::filterBlacklist(const QString &name)
 
     //Remove special characters.
     QRegExp regex(REGEXSPECIAL);
+    clean.remove(regex);
+
+    //Remove CD 1
+    regex.setPattern(REGEXCD);
     clean.remove(regex);
 
     //Remove blacklisted words

@@ -69,6 +69,10 @@ private:
      */
     static const QString REGEXYEAR;
 
+    /* Regex to filter cd from name.
+     */
+    static const QString REGEXCD;
+
     /* List with words to filter out.
      * Read from $XDG_DATA_DIRS/MovieThumbs/blacklist
      */
