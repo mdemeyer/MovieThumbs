@@ -44,3 +44,4 @@ target_link_libraries(moviethumbs
 
 install(TARGETS moviethumbs LIBRARY DESTINATION lib)
 install(FILES ${MOVIETHUMBS_INCLUDES} DESTINATION include/libmoviethumbs)
+install(FILES blacklist DESTINATION "/usr/share/MovieThumbs/")

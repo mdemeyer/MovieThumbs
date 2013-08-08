@@ -3,4 +3,3 @@ project(MovieThumbs)
 
 add_subdirectory(core)
 add_subdirectory(kde)
-add_subdirectory(content)
