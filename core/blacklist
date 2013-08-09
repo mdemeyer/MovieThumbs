@@ -1,32 +1,16 @@
 # MovieThumbs blacklist
 # This is a list with words that should be removed from filenames when looking for posters
+# Everything after this word is deleted from the name
+
 # For speed reasons this list is only checked if a first search got no results
 
 # Put each word on a separate line, upper or lower case does not matter
 # Lines that begin with '#' are ignored
 
-# Torrent release groups. 
-# Some common names of release groups. This might be removed in future versions.
-# A very large list can be found here: http://filebot.net/data/release-groups.txt
-
-EVOLVE
-axxo
-JUSTiCE
-ASAP
-FQM
-BAJSKORV
-C4TV
-D2V
-DiVERGE
-FTP
-KYR
-LMAO
-LOL
-MOMENTUM
-SYS
-TLA
-YesTV
-MiLLENiUM
+dual audio
+extended cut
+sample
+new source
 
 # Common subtitle languages. More have to be added.
 dutch
