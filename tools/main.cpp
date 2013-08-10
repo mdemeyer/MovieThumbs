@@ -22,7 +22,6 @@
 #include <QObject>
 #include <QString>
 
-#include <iostream>
 #include <unistd.h>    /*getopt*/
 
 #include "tools.h"
@@ -40,22 +39,25 @@ int main(int argc, char** argv)
 
     Tools tool;
 
-    while ((argument = getopt (argc, argv, "i:o:s:h")) != -1) {
+    while ((argument = getopt (argc, argv, "i:o:s:hv")) != -1) {
         switch (argument) {
             case 'i':
-                cout << "Input file: " << optarg << endl;
+                // Input file
                 input = optarg;
                 break;
             case 'o':
-                cout << "Output file: " << optarg << endl;
+                // Output file
                 output = optarg;
                 break;
             case 's':
-                cout << "size" << endl;
+                // Size
                 size = atoi(optarg);
                 break;
             case 'h':
                 tool.printHelp();
+                return 0;
+            case 'v':
+                tool.printVersion();
                 return 0;
             case '?':
             default:
@@ -64,8 +66,11 @@ int main(int argc, char** argv)
         }
     }
 
-//     cout << "Starting download" << endl;
-    tool.createThumbnail(input, output, size);
+    if(!input.isNull() && !output.isNull()) {
+        tool.createThumbnail(input, output, size);
+    } else {
+        tool.printHelp();
+    }
 
-return 0;
+    return 0;
 }

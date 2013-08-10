@@ -43,7 +43,7 @@ Tools::~Tools()
 
 void Tools::printVersion()
 {
-    cout << "VERSION";
+    cout << "VERSION: 0.3.0" << endl;
 }
 
 void Tools::printHelp()
