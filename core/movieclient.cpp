@@ -52,6 +52,7 @@ void MovieClient::addSearch(const QString &path)
         //Is the poster already in cache?
         if(m_series->duplicate(name, year)) {
             emit slotPosterFinished(m_series->Poster());
+            return;
         }
         //Retry cache with cleaner filename
         if(filteredName.isEmpty()){
@@ -59,17 +60,21 @@ void MovieClient::addSearch(const QString &path)
         }
         if(m_series->duplicate(filteredName, year)) {
             emit slotPosterFinished(m_series->Poster());
+            return;
         }
 
         if(seriesDownload(name, year)) {
             emit slotPosterFinished(m_series->Poster());
+            return;
         } else if(seriesDownload(filteredName, year)) {
             emit slotPosterFinished(m_series->Poster());
+            return;
         }
     }
 
     if(movieDownload(name, year)) {
         emit slotPosterFinished(m_movie->Poster());
+        return;
     } else {
         //Retry search with cleaner filename
         if(filteredName.isEmpty()){
@@ -77,9 +82,9 @@ void MovieClient::addSearch(const QString &path)
         }
         if(movieDownload(filteredName, year)) {
             emit slotPosterFinished(m_movie->Poster());
+            return;
         }
     }
-//TODO    return !img.isNull();
 }
 
 bool MovieClient::seriesDownload(const QString &seriesName, const QString &year)
