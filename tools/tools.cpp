@@ -32,6 +32,7 @@
 using namespace std;
 
 QString outputFile;
+int fileSize;
 
 Tools::Tools()
 {
@@ -60,7 +61,15 @@ void Tools::printHelp()
 
 void Tools::savePoster(const QImage poster)
 {
-    if(!poster.save(outputFile, "PNG", 0)) {
+    QImage saveFile = poster;
+
+    //Resize the image
+    if(fileSize != 0 && saveFile.height() != fileSize) {
+         saveFile = saveFile.scaledToHeight(fileSize);
+    }
+
+    //Save the file on disk
+    if(!saveFile.save(outputFile, "PNG", 0)) {
         cerr << "Cannot save file!" << endl;
     }
 }
@@ -68,6 +77,7 @@ void Tools::savePoster(const QImage poster)
 void Tools::createThumbnail(const QString &input, const QString &output, int size)
 {
     outputFile = output;
+    fileSize = size;
 
     MovieClient *thumb = new MovieClient();
     connect(thumb, SIGNAL(slotPosterFinished(const QImage&)), this , SLOT(savePoster(const QImage&)));

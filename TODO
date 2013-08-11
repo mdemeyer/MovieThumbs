@@ -3,7 +3,6 @@ Bugs
 * Remove Eventloop from movieClient
 * Make fileparser non static
 * Remove unneeded tools.cpp and tools.h file (figure out moc for main.cpp only)
-* Size parameter from cli is not used
 * No versioning for libs
 
 

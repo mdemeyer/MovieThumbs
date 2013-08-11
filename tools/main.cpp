@@ -33,13 +33,13 @@ int main(int argc, char** argv)
     QCoreApplication app(argc, argv);
 
     int argument;
-    int size = 128;
+    int size;
     QString input;
     QString output;
 
     Tools tool;
 
-    while ((argument = getopt (argc, argv, "i:o:s:hv")) != -1) {
+    while ((argument = getopt (argc, argv, "i:o:s::hv")) != -1) {
         switch (argument) {
             case 'i':
                 // Input file
@@ -51,7 +51,7 @@ int main(int argc, char** argv)
                 break;
             case 's':
                 // Size
-                size = atoi(optarg);
+                size = optarg ? atoi(optarg) : 128;
                 break;
             case 'h':
                 tool.printHelp();

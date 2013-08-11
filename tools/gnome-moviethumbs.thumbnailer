@@ -1,3 +1,3 @@
 [Thumbnailer Entry]
-Exec=moviethumbs -i %i -o %o
+Exec=moviethumbs -i %i -o %o -s%s
 MimeType=application/ogg;application/smil;application/vnd.rn-realmedia;application/vnd.rn-realvideo;application/x-extension-m4a;application/x-extension-mp4;application/x-flash-video;application/x-matroska;application/x-ms-asf;application/x-ogg;application/x-quicktime-media-link;application/x-shockwave-flash;application/x-shorten;application/x-smil;application/xspf/xml;audio/x-pn-realaudio;image/vnd.rn-realpix;image/vnd.rn-realpix;misc/ultravox;video/3gpp;video/dv;video/mp4;video/mpeg;video/msvideo;video/quicktime;video/vnd.divx;video/vnd.rn-realvideo;video/x-anim;video/x-avi;video/x-flc;video/x-fli;video/x-m4v;video/x-matroska;video/x-mpeg;video/x-ms-asf;video/x-msvideo;video/x-ms-wmv;video/x-nsv;video/x-ogm/ogg;
