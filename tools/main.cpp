@@ -33,7 +33,7 @@ int main(int argc, char** argv)
     QCoreApplication app(argc, argv);
 
     int argument;
-    int size;
+    int size = 0;
     QString input;
     QString output;
 
