@@ -1,3 +1,8 @@
+0.3.1 (2013-08-14)
+================================
+* Fix cache issue
+* Return version with "moviethumbs -v"
+
 0.3.0 (2013-08-09)
 ================================
 * Increased download speed
