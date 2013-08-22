@@ -56,6 +56,7 @@ void TvService::startSearch(const QString &name, const QString & /*year*/)
 
     QUrl urlQuery("http://thetvdb.com/api/GetSeries.php");
     urlQuery.addQueryItem("seriesname", name);
+    urlQuery.addQueryItem("language", language());
 
     QNetworkRequest request;
     request.setUrl(urlQuery);

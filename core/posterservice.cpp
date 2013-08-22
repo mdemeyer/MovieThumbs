@@ -76,6 +76,14 @@ void PosterService::copyImage(QImage *image)
     poster = *image;
 }
 
+QString PosterService::language()
+{
+    // QLocale::name returns the locale in lang_COUNTRY format
+    // we only need the 2 letter lang code
+    QString lang = QLocale::system().name();
+    return lang.left(2);
+}
+
 void PosterService::onNetworkError(QNetworkReply::NetworkError)
 {
     qDebug() << "Download error";

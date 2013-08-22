@@ -26,6 +26,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
+class QString;
 
 class PosterService : public QObject
 {
@@ -45,6 +46,7 @@ public:
 protected:
     void setUrl(QUrl url);
     QNetworkAccessManager *networkManager;
+    QString language();
 
 private:
     QImage poster;

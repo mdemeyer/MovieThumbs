@@ -43,6 +43,7 @@ void MovieService::startSearch(const QString &name, const QString &year)
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key", KEY);
     urlQuery.addQueryItem("query", name);
+    urlQuery.addQueryItem("language", language());
     if(!year.isEmpty()) {
         urlQuery.addQueryItem("year", year);
     }
