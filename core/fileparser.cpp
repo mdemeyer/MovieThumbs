@@ -50,9 +50,10 @@ const QStringList FileParser::REGEXSERIES = QStringList()
                     << ("[\\[|\\(][a-zA-Z0-9]{8}[\\]|\\)]"); //[abCD5678] or (abCD5678)
 
 /* REGEXSEPARATORS
- * Remove dots, underscores, etc. from filenames
+ * Remove underscores, etc. from filenames
+ * Dots are removed later, they can be part of a title
  */
-const QString FileParser::REGEXSEPARATORS = "[_\\-.]";
+const QString FileParser::REGEXSEPARATORS = "[_\\-]";
 
 /* REGEXSPECIAL
  * Used to remove special characters
@@ -159,6 +160,9 @@ bool FileParser::isSeries(const QString &name)
 QString FileParser::filterBlacklist(const QString &name)
 {
     QString clean = name;
+
+    // Remove dots
+    clean.replace(".", " ");
 
     //Remove special characters.
     QRegExp regex(REGEXSPECIAL);
