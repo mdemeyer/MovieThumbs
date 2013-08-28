@@ -7,6 +7,11 @@ find_library(MOVIETHUMBS_LIBRARY moviethumbs)
 
 add_definitions (${QT_DEFINITIONS})
 
+if(INCLUDE_INSTALL_DIR)
+else()
+set(INCLUDE_INSTALL_DIR ${CMAKE_INSTALL_PREFIX}/include)
+endif()
+
 include_directories(${CMAKE_SOURCE_DIR} ${CMAKE_CURRENT_BINARY_DIR} ${QT_INCLUDES} ${INCLUDE_INSTALL_DIR}/libmoviethumbs/)
 
 set(MOVIETHUMBS_TOOLS_SRCS main.cpp tools.cpp)
