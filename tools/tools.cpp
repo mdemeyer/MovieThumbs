@@ -23,8 +23,11 @@
 #include <QString>
 #include <QImage>
 #include <QFile>
+#include <QFileInfo>
 
 #include <iostream>
+
+#include <fileparser.h>
 #include <movieclient.h>
 
 #include "tools.h"
@@ -54,6 +57,7 @@ void Tools::printHelp()
          << "Options:" << endl
          << "  -i<s>   : input file" << endl
          << "  -o<s>   : output file" << endl
+         << "  -t<s>   : test filename" << endl
          << "  -s<n>   : thumbnail size (default: 128)" << endl
          << "  -v      : print version number" << endl
          << "  -h      : show this help" << endl;
@@ -83,4 +87,24 @@ void Tools::createThumbnail(const QString &input, const QString &output, int siz
     connect(thumb, SIGNAL(slotPosterFinished(const QImage&)), this , SLOT(savePoster(const QImage&)));
 
     thumb->addSearch(input);
+}
+
+void Tools::testFile(const QString &name)
+{
+    QFileInfo info(name);
+    QString suffix = info.suffix();
+
+    QString baseName = FileParser::baseName(name);
+    QString year = FileParser::year(baseName);
+    QString cleanName = FileParser::cleanName(baseName);
+    QString filteredName = FileParser::filterBlacklist(cleanName);
+    bool series = FileParser::isSeries(baseName);
+
+    cout << endl
+        << "Base Name: " << baseName.toStdString() << endl
+        << "Suffix: " << suffix.toStdString() << endl
+        << "Series: " << series << endl
+        << "Year: " << year.toStdString()<< endl
+        << "Clean Name: " << cleanName.toStdString()<< endl
+        << "Filtered Name: " << filteredName.toStdString()<< endl;
 }

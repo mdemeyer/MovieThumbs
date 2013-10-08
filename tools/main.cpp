@@ -39,7 +39,7 @@ int main(int argc, char** argv)
 
     Tools tool;
 
-    while ((argument = getopt (argc, argv, "i:o:s::hv")) != -1) {
+    while ((argument = getopt (argc, argv, "i:o:s::hvt:")) != -1) {
         switch (argument) {
             case 'i':
                 // Input file
@@ -59,6 +59,10 @@ int main(int argc, char** argv)
             case 'v':
                 tool.printVersion();
                 return 0;
+            case 't':
+		// Test filename
+		tool.testFile(optarg);
+		return 0;
             case '?':
             default:
                 tool.printHelp();

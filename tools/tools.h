@@ -33,6 +33,7 @@ public:
     virtual ~Tools();
 
     void createThumbnail(const QString& input, const QString& output, int size);
+    void testFile(const QString& name);
 
     void printHelp();
     void printVersion();
