@@ -11,6 +11,7 @@ dual audio
 extended cut
 sample
 new source
+directors cut
 
 # Common subtitle languages. More have to be added.
 dutch
@@ -52,7 +53,6 @@ www
 CAMRip
 CAM
 PDVD
-TS
 TELESYNC
 PDVD
 PPVRip
@@ -100,6 +100,9 @@ iTunesHD
 
 # Video formats
 # Also taken from filebot
+mp4
+mkv
+avi
 divx5
 DivX
 Xvid
