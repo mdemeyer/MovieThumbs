@@ -48,6 +48,16 @@ void MovieClient::addSearch(const QString &path)
 
     QString filteredName;
 
+    //Look for a local poster or cover file
+    QString localFile= FileParser::findLocalFile(path);
+    if(!localFile.isNull()) {
+	QImage localImage = QImage(localFile);
+	if(!localImage.isNull()) {
+            emit slotPosterFinished(localImage);
+	    return;
+	}
+    }
+
     if(FileParser::isSeries(baseName)){
         //Is the poster already in cache?
         if(m_series->duplicate(name, year)) {

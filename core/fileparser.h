@@ -38,6 +38,7 @@ public:
     static QString year(const QString& name);
     static QString filterBlacklist(const QString& name);
 
+    static QString findLocalFile(const QString& path);
     static bool isSeries(const QString& name);
 
 private:
@@ -78,6 +79,9 @@ private:
      */
     static const QStringList BLACKLIST;
     static QStringList readBlacklist();
+
+    static const QStringList LOCALFILES;
+    static const QStringList IMAGESUFFIX;
 };
 
 #endif // FILEPARSER_H

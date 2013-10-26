@@ -84,6 +84,14 @@ const QString FileParser::REGEXCD = "[C|c][D|d]\\s*\\d+";
 
 const QStringList FileParser::BLACKLIST = readBlacklist();
 
+const QStringList FileParser::LOCALFILES = QStringList()
+                    << "poster"
+                    << "cover"
+                    << "folder"
+                    << "banner"
+                    << "fanart";
+const QStringList FileParser::IMAGESUFFIX = QStringList() << "*.png" << "*.jpg" << "*.jpeg";
+
 FileParser::FileParser()
 {
 }
@@ -179,6 +187,27 @@ QString FileParser::filterBlacklist(const QString &name)
         }
     }
     return clean.simplified();
+}
+
+QString FileParser::findLocalFile(const QString &path)
+{
+    QFileInfo file(path);
+    QDir dir = file.dir();
+
+    //Make a list of all images in the directory
+    dir.setNameFilters(IMAGESUFFIX);
+    QFileInfoList files = dir.entryInfoList();
+
+    //Add identical name to the list (moviename.png)
+    QStringList localFiles = QStringList() << LOCALFILES << file.baseName();
+
+    //Compare the image list to standard file names
+    foreach(const QFileInfo& image, files) {
+        if(localFiles.contains(image.completeBaseName(), Qt::CaseInsensitive)) {
+            return image.filePath();
+        }
+    }
+    return QString();
 }
 
 QStringList FileParser::readBlacklist()

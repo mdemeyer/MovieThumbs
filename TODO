@@ -12,7 +12,6 @@ Features
 * Add Tmdb config (http://help.themoviedb.org/kb/api/configuration)
 * Add configuration option to switch between available posters
 * Look for embedded posters in matroska files
-* Search for local files (poster.png)
 * Unit tests for core
 
 
@@ -27,5 +26,4 @@ Project politics
 * Include upstream if people want it
 * Merge ffmpeg and mplayer thumbnail
 * Website?
-* add on gnome-look.org
 
