@@ -19,7 +19,7 @@
  ***************************************************************************/
 
 #include "moviethumbs.h"
-#include <movieclient.h>
+#include <libmoviethumbs/movieclient.h>
 
 #include <QtCore/QEventLoop>
 #include <QtCore/QString>

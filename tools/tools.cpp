@@ -27,8 +27,8 @@
 
 #include <iostream>
 
-#include <fileparser.h>
-#include <movieclient.h>
+#include <libmoviethumbs/fileparser.h>
+#include <libmoviethumbs/movieclient.h>
 
 #include "tools.h"
 

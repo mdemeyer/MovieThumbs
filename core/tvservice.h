@@ -21,7 +21,7 @@
 #ifndef TVSERVICE_H
 #define TVSERVICE_H
 
-#include <posterservice.h>
+#include "posterservice.h"
 
 #include <QtCore/QCache>
 

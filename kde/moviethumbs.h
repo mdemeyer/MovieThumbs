@@ -25,7 +25,7 @@
 #include <QImage>
 
 #include <kio/thumbcreator.h>
-#include <movieclient.h>
+#include <libmoviethumbs/movieclient.h>
 
 class MovieThumbs : public QObject, public ThumbCreator
 {
