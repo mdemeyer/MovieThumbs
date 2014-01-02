@@ -5,7 +5,10 @@ If the wrong thumbnail is downloaded include the year when the movie was release
 All information that is between brackets () and [] will not be used to search. You can still put the year in brackets.
 
 Movie posters are downloaded from tmdb.org (The Movie DataBase)
+api documentation: http://docs.themoviedb.apiary.io/
+
 Series posters are from thetvdb.com (The TV DataBase)
+api documentation: http://www.thetvdb.com/wiki/index.php/Programmers_API
 
 I would like to thank the tmdb and thetvdb teams for allowing the use of their api.
 
