@@ -87,8 +87,8 @@ void MovieService::searchFinished()
         posterPath << (poster["poster_path"]).toString();
     }
 
-    //The imgobject server does not support ssl so use normal http to download
-    setUrl("http://cf2.imgobject.com/t/p/w185/" + posterPath.at(0));
+    // http://docs.themoviedb.apiary.io/#configuration
+    setUrl("https://image.tmdb.org/t/p/w92/" + posterPath.at(0));
     emit posterFound();
 }
 
