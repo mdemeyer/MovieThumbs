@@ -18,20 +18,20 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef MOVIESERVICE_H
-#define MOVIESERVICE_H
+#ifndef TMDBMANAGER_H
+#define TMDBMANAGER_H
 
-#include "posterservice.h"
+#include "downloadmanager.h"
 
 class QNetworkAccessManager;
 class QSslError;
 
-class MovieService : public PosterService
+class TmdbManager : public DownloadManager
 {
     Q_OBJECT
 
 public:
-    MovieService(QNetworkAccessManager *qnam) : PosterService(qnam) {}
+    TmdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {}
     void startSearch(const QString& name, const QString& year);
 
 private:
@@ -42,4 +42,4 @@ private slots:
     void slotSslErrors(const QList<QSslError>& sslErrors);
 };
 
-#endif // MOVIESERVICE_H
+#endif // TMDBMANAGER_H

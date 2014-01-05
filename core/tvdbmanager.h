@@ -18,22 +18,22 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef TVSERVICE_H
-#define TVSERVICE_H
+#ifndef TVDBMANAGER_H
+#define TVDBMANAGER_H
 
-#include "posterservice.h"
+#include "downloadmanager.h"
 
 #include <QtCore/QCache>
 
 class QNetworkAccessManager;
 
-class TvService : public PosterService
+class TvdbManager : public DownloadManager
 {
     Q_OBJECT
 
 public:
-    explicit TvService(QNetworkAccessManager *qnam);
-    ~TvService();
+    explicit TvdbManager(QNetworkAccessManager *qnam);
+    ~TvdbManager();
     void startSearch(const QString& name, const QString& year);
     bool duplicate(const QString& name, const QString& year);
 
@@ -49,4 +49,4 @@ private slots:
     void storeImage();
 };
 
-#endif // TVSERVICE_H
+#endif // TVDBMANAGER_H

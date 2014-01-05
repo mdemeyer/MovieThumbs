@@ -18,8 +18,8 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#ifndef POSTERSERVICE_H
-#define POSTERSERVICE_H
+#ifndef DOWNLOADMANAGER_H
+#define DOWNLOADMANAGER_H
 
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkReply>
@@ -28,13 +28,13 @@ class QNetworkAccessManager;
 class QNetworkReply;
 class QString;
 
-class PosterService : public QObject
+class DownloadManager : public QObject
 {
     Q_OBJECT
 
 public:
-    PosterService(QNetworkAccessManager *qnam);
-    virtual ~PosterService();
+    DownloadManager(QNetworkAccessManager *qnam);
+    virtual ~DownloadManager();
 
     virtual void startSearch(const QString& name, const QString& year) = 0;
     void startDownload();
@@ -62,4 +62,4 @@ signals:
     void posterFound();
 };
 
-#endif // POSTERSERVICE
+#endif // DOWNLOADMANAGER_H

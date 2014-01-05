@@ -18,7 +18,7 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "movieservice.h"
+#include "tmdbmanager.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
@@ -36,9 +36,9 @@
 
 #include <qjson/parser.h>
 
-const QString MovieService::KEY = "5c8533aacb1fa275a5113d0728268d5a";
+const QString TmdbManager::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 
-void MovieService::startSearch(const QString &name, const QString &year)
+void TmdbManager::startSearch(const QString &name, const QString &year)
 {
     QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
     urlQuery.addQueryItem("api_key", KEY);
@@ -58,7 +58,7 @@ void MovieService::startSearch(const QString &name, const QString &year)
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
 }
 
-void MovieService::searchFinished()
+void TmdbManager::searchFinished()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
@@ -92,7 +92,7 @@ void MovieService::searchFinished()
     emit posterFound();
 }
 
-void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
+void TmdbManager::slotSslErrors(const QList<QSslError> &sslErrors)
 {
     foreach(const QSslError & error, sslErrors) {
         qDebug() << "SSL error: " << qPrintable(error.errorString());
@@ -101,4 +101,4 @@ void MovieService::slotSslErrors(const QList<QSslError> &sslErrors)
     emit downloadError();
 }
 
-#include "movieservice.moc"
+#include "tmdbmanager.moc"

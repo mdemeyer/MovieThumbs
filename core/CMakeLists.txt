@@ -17,17 +17,17 @@ include_directories(${CMAKE_SOURCE_DIR}
 set(MOVIETHUMBS_CORE_SRCS
     fileparser.cpp
     movieclient.cpp
-    movieservice.cpp
-    posterservice.cpp
-    tvservice.cpp
+    tmdbmanager.cpp
+    downloadmanager.cpp
+    tvdbmanager.cpp
     )
 
 set(MOVIETHUMBS_INCLUDES
     fileparser.h
     movieclient.h
-    movieservice.h
-    posterservice.h
-    tvservice.h
+    tmdbmanager.h
+    downloadmanager.h
+    tvdbmanager.h
     )
 
 QT4_AUTOMOC(${MOVIETHUMBS_CORE_SRCS})

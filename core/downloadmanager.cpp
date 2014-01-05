@@ -18,7 +18,7 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "posterservice.h"
+#include "downloadmanager.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QUrl>
@@ -27,28 +27,28 @@
 
 #include <QDebug>
 
-PosterService::PosterService(QNetworkAccessManager *qnam)
+DownloadManager::DownloadManager(QNetworkAccessManager *qnam)
 {
     networkManager = qnam;
     hasPoster = false;
 }
 
-PosterService::~PosterService()
+DownloadManager::~DownloadManager()
 {
 }
 
-QImage PosterService::Poster()
+QImage DownloadManager::Poster()
 {
     return poster;
 }
 
-void PosterService::setUrl(QUrl url)
+void DownloadManager::setUrl(QUrl url)
 {
     posterLink = url;
     hasPoster = true;
 }
 
-void PosterService::startDownload()
+void DownloadManager::startDownload()
 {
     QNetworkRequest request;
     request.setUrl(posterLink);
@@ -60,7 +60,7 @@ void PosterService::startDownload()
     hasPoster = false;
 }
 
-void PosterService::downloadFinished()
+void DownloadManager::downloadFinished()
 {
     QNetworkReply *downloadReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = downloadReply->readAll();
@@ -71,12 +71,12 @@ void PosterService::downloadFinished()
     emit posterDownloaded();
 }
 
-void PosterService::copyImage(QImage *image)
+void DownloadManager::copyImage(QImage *image)
 {
     poster = *image;
 }
 
-QString PosterService::language()
+QString DownloadManager::language()
 {
     // QLocale::name returns the locale in lang_COUNTRY format
     // we only need the 2 letter lang code
@@ -84,10 +84,10 @@ QString PosterService::language()
     return lang.left(2);
 }
 
-void PosterService::onNetworkError(QNetworkReply::NetworkError)
+void DownloadManager::onNetworkError(QNetworkReply::NetworkError)
 {
     qDebug() << "Download error";
     emit downloadError();
 }
 
-#include "posterservice.moc"
+#include "downloadmanager.moc"

@@ -18,7 +18,7 @@
  *   MA  02110-1301  USA                                                   *
  ***************************************************************************/
 
-#include "tvservice.h"
+#include "tvdbmanager.h"
 
 #include <QtCore/QByteArray>
 #include <QtCore/QString>
@@ -30,18 +30,18 @@
 
 #include <QDebug>
 
-const QString TvService::KEY = "DA777D9ACDBB771E";
+const QString TvdbManager::KEY = "DA777D9ACDBB771E";
 
-TvService::TvService(QNetworkAccessManager *qnam) : PosterService(qnam) {
+TvdbManager::TvdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {
     connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
 }
 
-TvService::~TvService()
+TvdbManager::~TvdbManager()
 {
 
 }
 
-bool TvService::duplicate(const QString &name, const QString & /*year*/)
+bool TvdbManager::duplicate(const QString &name, const QString & /*year*/)
 {
     if(cache.contains(name)) {
         copyImage(cache.object(name));
@@ -50,7 +50,7 @@ bool TvService::duplicate(const QString &name, const QString & /*year*/)
     return false;
 }
 
-void TvService::startSearch(const QString &name, const QString & /*year*/)
+void TvdbManager::startSearch(const QString &name, const QString & /*year*/)
 {
     nameKey = name;
 
@@ -66,7 +66,7 @@ void TvService::startSearch(const QString &name, const QString & /*year*/)
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 }
 
-void TvService::foundSeries()
+void TvdbManager::foundSeries()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
@@ -98,7 +98,7 @@ void TvService::foundSeries()
     return;
 }
 
-void TvService::foundBanners()
+void TvdbManager::foundBanners()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
@@ -128,9 +128,9 @@ void TvService::foundBanners()
     emit downloadError();
 }
 
-void TvService::storeImage()
+void TvdbManager::storeImage()
 {
     cache.insert(nameKey, new QImage(Poster()));
 }
 
-#include "tvservice.moc"
+#include "tvdbmanager.moc"

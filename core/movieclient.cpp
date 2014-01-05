@@ -29,8 +29,8 @@
 MovieClient::MovieClient()
 {
     m_networkManager = new QNetworkAccessManager(this);
-    m_movie = new MovieService(m_networkManager);
-    m_series = new TvService(m_networkManager);
+    m_movie = new TmdbManager(m_networkManager);
+    m_series = new TvdbManager(m_networkManager);
 }
 
 MovieClient::~MovieClient()
