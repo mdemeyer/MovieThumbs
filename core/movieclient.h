@@ -22,7 +22,6 @@
 #define MOVIECLIENT_H
 
 #include "tmdbmanager.h"
-#include "tvdbmanager.h"
 
 #include <QtCore/QObject>
 
@@ -42,8 +41,7 @@ public:
 
 private:
     QNetworkAccessManager *m_networkManager;
-    TmdbManager *m_movie;
-    TvdbManager *m_series;
+    TmdbManager *m_tmdb;
 
     bool seriesDownload(const QString& name, const QString& year);
     bool movieDownload(const QString& name, const QString& year);

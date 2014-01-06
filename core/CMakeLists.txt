@@ -19,7 +19,6 @@ set(MOVIETHUMBS_CORE_SRCS
     movieclient.cpp
     tmdbmanager.cpp
     downloadmanager.cpp
-    tvdbmanager.cpp
     )
 
 set(MOVIETHUMBS_INCLUDES
@@ -27,7 +26,6 @@ set(MOVIETHUMBS_INCLUDES
     movieclient.h
     tmdbmanager.h
     downloadmanager.h
-    tvdbmanager.h
     )
 
 QT4_AUTOMOC(${MOVIETHUMBS_CORE_SRCS})
