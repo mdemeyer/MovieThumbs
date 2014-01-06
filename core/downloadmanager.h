@@ -21,6 +21,7 @@
 #ifndef DOWNLOADMANAGER_H
 #define DOWNLOADMANAGER_H
 
+#include <QtCore/QCache>
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkReply>
 
@@ -37,6 +38,8 @@ public:
     virtual ~DownloadManager();
 
     virtual void startSearch(const QString& name, const QString& year) = 0;
+    bool duplicate(const QString& name, const QString& year);
+
     void startDownload();
     void copyImage(QImage* image);
 
@@ -48,9 +51,17 @@ protected:
     QNetworkAccessManager *networkManager;
     QString language();
 
+    //TODO Remove global and use storeImage(QString name)
+    QString nameKey;
+
 private:
     QImage poster;
     QUrl posterLink;
+
+    QCache<QString, QImage> cache;
+
+public slots:
+    void storeImage();
 
 private slots:
     void downloadFinished();

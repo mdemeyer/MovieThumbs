@@ -23,8 +23,6 @@
 
 #include "downloadmanager.h"
 
-#include <QtCore/QCache>
-
 class QNetworkAccessManager;
 
 class TvdbManager : public DownloadManager
@@ -35,18 +33,13 @@ public:
     explicit TvdbManager(QNetworkAccessManager *qnam);
     ~TvdbManager();
     void startSearch(const QString& name, const QString& year);
-    bool duplicate(const QString& name, const QString& year);
 
 private:
     static const QString KEY;
 
-    QString nameKey;
-    QCache<QString, QImage> cache;
-
 private slots:
     void foundSeries();
     void foundBanners();
-    void storeImage();
 };
 
 #endif // TVDBMANAGER_H

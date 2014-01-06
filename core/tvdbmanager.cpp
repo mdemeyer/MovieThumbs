@@ -41,15 +41,6 @@ TvdbManager::~TvdbManager()
 
 }
 
-bool TvdbManager::duplicate(const QString &name, const QString & /*year*/)
-{
-    if(cache.contains(name)) {
-        copyImage(cache.object(name));
-        return true;
-    }
-    return false;
-}
-
 void TvdbManager::startSearch(const QString &name, const QString & /*year*/)
 {
     nameKey = name;
@@ -126,11 +117,6 @@ void TvdbManager::foundBanners()
     }
     //If we are here all hope is lost.
     emit downloadError();
-}
-
-void TvdbManager::storeImage()
-{
-    cache.insert(nameKey, new QImage(Poster()));
 }
 
 #include "tvdbmanager.moc"

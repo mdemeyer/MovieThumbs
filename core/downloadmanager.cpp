@@ -37,6 +37,15 @@ DownloadManager::~DownloadManager()
 {
 }
 
+bool DownloadManager::duplicate(const QString &name, const QString & /*year*/)
+{
+    if(cache.contains(name)) {
+        copyImage(cache.object(name));
+        return true;
+    }
+    return false;
+}
+
 QImage DownloadManager::Poster()
 {
     return poster;
@@ -82,6 +91,11 @@ QString DownloadManager::language()
     // we only need the 2 letter lang code
     QString lang = QLocale::system().name();
     return lang.left(2);
+}
+
+void DownloadManager::storeImage()
+{
+    cache.insert(nameKey, new QImage(Poster()));
 }
 
 void DownloadManager::onNetworkError(QNetworkReply::NetworkError)
