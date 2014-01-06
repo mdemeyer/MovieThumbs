@@ -33,6 +33,7 @@ class TmdbManager : public DownloadManager
 public:
     TmdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {}
     void findMovie(const QString& name, const QString& year);
+    void findTv(const QString& name, const QString& year);
 
 private:
     static const QString KEY;

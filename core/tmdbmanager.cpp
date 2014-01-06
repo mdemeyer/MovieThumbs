@@ -51,6 +51,19 @@ void TmdbManager::findMovie(const QString &name, const QString &year)
     startSearch(query);
 }
 
+void TmdbManager::findTv(const QString &name, const QString &year)
+{
+    QUrl query("https://api.themoviedb.org/3/search/tv");
+    query.addQueryItem("api_key", KEY);
+    query.addQueryItem("query", name);
+    query.addQueryItem("language", language());
+    if(!year.isEmpty()) {
+        query.addQueryItem("first_air_date_year", year);
+    }
+
+    startSearch(query);
+}
+
 void TmdbManager::startSearch(const QUrl &query)
 {
     QNetworkRequest request;
