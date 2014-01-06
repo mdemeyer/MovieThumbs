@@ -33,7 +33,6 @@
 const QString TvdbManager::KEY = "DA777D9ACDBB771E";
 
 TvdbManager::TvdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {
-    connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
 }
 
 TvdbManager::~TvdbManager()
@@ -44,6 +43,7 @@ TvdbManager::~TvdbManager()
 void TvdbManager::findTv(const QString &name, const QString & /*year*/)
 {
     nameKey = name;
+    connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
 
     QUrl query("http://thetvdb.com/api/GetSeries.php");
     query.addQueryItem("seriesname", name);

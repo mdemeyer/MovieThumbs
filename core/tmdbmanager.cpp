@@ -61,6 +61,9 @@ void TmdbManager::findTv(const QString &name, const QString &year)
         query.addQueryItem("first_air_date_year", year);
     }
 
+    nameKey = name;
+    connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
+
     startSearch(query);
 }
 

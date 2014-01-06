@@ -96,6 +96,9 @@ QString DownloadManager::language()
 void DownloadManager::storeImage()
 {
     cache.insert(nameKey, new QImage(Poster()));
+
+    // We only want to cache series.
+    QObject::disconnect(this, SIGNAL(posterDownloaded()), this, SLOT(storeImage()));
 }
 
 void DownloadManager::onNetworkError(QNetworkReply::NetworkError)
