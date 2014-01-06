@@ -24,6 +24,7 @@
 #include <QtCore/QUrl>
 
 #include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QSslError>
 
 #include <QDebug>
 
@@ -104,6 +105,15 @@ void DownloadManager::storeImage()
 void DownloadManager::onNetworkError(QNetworkReply::NetworkError)
 {
     qDebug() << "Download error";
+    emit downloadError();
+}
+
+void DownloadManager::slotSslErrors(const QList<QSslError> &sslErrors)
+{
+    foreach(const QSslError & error, sslErrors) {
+        qDebug() << "SSL error: " << qPrintable(error.errorString());
+    }
+
     emit downloadError();
 }
 

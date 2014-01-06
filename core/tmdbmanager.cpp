@@ -30,7 +30,6 @@
 #include <QtCore/QVariantMap>
 
 #include <QtNetwork/QNetworkRequest>
-#include <QtNetwork/QSslError>
 
 #include <QDebug>
 
@@ -113,13 +112,5 @@ void TmdbManager::searchFinished()
     emit posterFound();
 }
 
-void TmdbManager::slotSslErrors(const QList<QSslError> &sslErrors)
-{
-    foreach(const QSslError & error, sslErrors) {
-        qDebug() << "SSL error: " << qPrintable(error.errorString());
-    }
-
-    emit downloadError();
-}
 
 #include "tmdbmanager.moc"

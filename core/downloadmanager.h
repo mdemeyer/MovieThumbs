@@ -27,6 +27,7 @@
 
 class QNetworkAccessManager;
 class QNetworkReply;
+class QSslError;
 class QString;
 
 class DownloadManager : public QObject
@@ -66,6 +67,7 @@ public slots:
 private slots:
     void downloadFinished();
     void onNetworkError(QNetworkReply::NetworkError);
+    void slotSslErrors(const QList<QSslError>& sslErrors);
 
 signals:
     void posterDownloaded();

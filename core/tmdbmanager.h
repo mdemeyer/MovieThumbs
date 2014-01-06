@@ -24,7 +24,6 @@
 #include "downloadmanager.h"
 
 class QNetworkAccessManager;
-class QSslError;
 
 class TmdbManager : public DownloadManager
 {
@@ -41,7 +40,6 @@ private:
 
 private slots:
     void searchFinished();
-    void slotSslErrors(const QList<QSslError>& sslErrors);
 };
 
 #endif // TMDBMANAGER_H
