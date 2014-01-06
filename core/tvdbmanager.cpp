@@ -41,16 +41,20 @@ TvdbManager::~TvdbManager()
 
 }
 
-void TvdbManager::startSearch(const QString &name, const QString & /*year*/)
+void TvdbManager::findTv(const QString &name, const QString & /*year*/)
 {
     nameKey = name;
 
-    QUrl urlQuery("http://thetvdb.com/api/GetSeries.php");
-    urlQuery.addQueryItem("seriesname", name);
-    urlQuery.addQueryItem("language", language());
+    QUrl query("http://thetvdb.com/api/GetSeries.php");
+    query.addQueryItem("seriesname", name);
+    query.addQueryItem("language", language());
 
+    startSearch(query);
+}
+void TvdbManager::startSearch(const QUrl &query)
+{
     QNetworkRequest request;
-    request.setUrl(urlQuery);
+    request.setUrl(query);
 
     QNetworkReply *reply = networkManager->get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(foundSeries()));

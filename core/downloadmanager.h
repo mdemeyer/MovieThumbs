@@ -37,7 +37,6 @@ public:
     DownloadManager(QNetworkAccessManager *qnam);
     virtual ~DownloadManager();
 
-    virtual void startSearch(const QString& name, const QString& year) = 0;
     bool duplicate(const QString& name, const QString& year);
 
     void startDownload();
@@ -55,9 +54,10 @@ protected:
     QString nameKey;
 
 private:
+    virtual void startSearch(const QUrl& query) = 0;
+
     QImage poster;
     QUrl posterLink;
-
     QCache<QString, QImage> cache;
 
 public slots:

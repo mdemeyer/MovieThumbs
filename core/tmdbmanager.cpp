@@ -38,18 +38,23 @@
 
 const QString TmdbManager::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 
-void TmdbManager::startSearch(const QString &name, const QString &year)
+void TmdbManager::findMovie(const QString &name, const QString &year)
 {
-    QUrl urlQuery("https://api.themoviedb.org/3/search/movie");
-    urlQuery.addQueryItem("api_key", KEY);
-    urlQuery.addQueryItem("query", name);
-    urlQuery.addQueryItem("language", language());
+    QUrl query("https://api.themoviedb.org/3/search/movie");
+    query.addQueryItem("api_key", KEY);
+    query.addQueryItem("query", name);
+    query.addQueryItem("language", language());
     if(!year.isEmpty()) {
-        urlQuery.addQueryItem("year", year);
+        query.addQueryItem("year", year);
     }
 
+    startSearch(query);
+}
+
+void TmdbManager::startSearch(const QUrl &query)
+{
     QNetworkRequest request;
-    request.setUrl(urlQuery);
+    request.setUrl(query);
     request.setRawHeader("Accept", "application/json");
 
     QNetworkReply *reply = networkManager->get(request);

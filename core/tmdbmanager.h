@@ -32,10 +32,11 @@ class TmdbManager : public DownloadManager
 
 public:
     TmdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {}
-    void startSearch(const QString& name, const QString& year);
+    void findMovie(const QString& name, const QString& year);
 
 private:
     static const QString KEY;
+    void startSearch(const QUrl& query);
 
 private slots:
     void searchFinished();

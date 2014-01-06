@@ -32,10 +32,11 @@ class TvdbManager : public DownloadManager
 public:
     explicit TvdbManager(QNetworkAccessManager *qnam);
     ~TvdbManager();
-    void startSearch(const QString& name, const QString& year);
+    void findTv(const QString& name, const QString& year);
 
 private:
     static const QString KEY;
+    void startSearch(const QUrl& query);
 
 private slots:
     void foundSeries();

@@ -104,7 +104,7 @@ bool MovieClient::seriesDownload(const QString &seriesName, const QString &year)
     connect(m_series, SIGNAL(downloadError()), &loop, SLOT(quit()));
     connect(m_series, SIGNAL(posterDownloaded()), &loop, SLOT(quit()));
 
-    m_series->startSearch(seriesName, year);
+    m_series->findTv(seriesName, year);
     loop.exec();
 
     if(m_series->hasPoster) {
@@ -122,7 +122,7 @@ bool MovieClient::movieDownload(const QString &movieName, const QString &movieYe
     connect(m_movie, SIGNAL(posterFound()), &loop, SLOT(quit()));
     connect(m_movie, SIGNAL(downloadError()), &loop, SLOT(quit()));
 
-    m_movie->startSearch(movieName, movieYear);
+    m_movie->findMovie(movieName, movieYear);
     loop.exec();
 
     if(m_movie->hasPoster) {
