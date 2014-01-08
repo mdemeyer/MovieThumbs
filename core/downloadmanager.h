@@ -30,12 +30,12 @@ class QNetworkReply;
 class QSslError;
 class QString;
 
-class DownloadManager : public QObject
+class DownloadManager : public QNetworkAccessManager
 {
     Q_OBJECT
 
 public:
-    DownloadManager(QNetworkAccessManager *qnam);
+    explicit DownloadManager();
     virtual ~DownloadManager();
 
     bool duplicate(const QString& name, const QString& year);
@@ -48,7 +48,6 @@ public:
 
 protected:
     void setUrl(QUrl url);
-    QNetworkAccessManager *networkManager;
     QString language();
 
     //TODO Remove global and use storeImage(QString name)

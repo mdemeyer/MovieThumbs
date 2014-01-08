@@ -30,7 +30,7 @@ class TvdbManager : public DownloadManager
     Q_OBJECT
 
 public:
-    explicit TvdbManager(QNetworkAccessManager *qnam);
+    explicit TvdbManager();
     ~TvdbManager();
     void findTv(const QString& name, const QString& year);
 

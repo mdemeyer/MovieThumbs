@@ -28,13 +28,11 @@
 
 MovieClient::MovieClient()
 {
-    m_networkManager = new QNetworkAccessManager(this);
-    m_tmdb = new TmdbManager(m_networkManager);
+    m_tmdb = new TmdbManager();
 }
 
 MovieClient::~MovieClient()
 {
-    delete m_networkManager;
     delete m_tmdb;
 }
 

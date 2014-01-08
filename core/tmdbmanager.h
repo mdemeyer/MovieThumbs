@@ -23,14 +23,12 @@
 
 #include "downloadmanager.h"
 
-class QNetworkAccessManager;
-
 class TmdbManager : public DownloadManager
 {
     Q_OBJECT
 
 public:
-    TmdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {}
+    TmdbManager() : DownloadManager() {}
     void findMovie(const QString& name, const QString& year);
     void findTv(const QString& name, const QString& year);
 

@@ -32,7 +32,7 @@
 
 const QString TvdbManager::KEY = "DA777D9ACDBB771E";
 
-TvdbManager::TvdbManager(QNetworkAccessManager *qnam) : DownloadManager(qnam) {
+TvdbManager::TvdbManager() : DownloadManager() {
 }
 
 TvdbManager::~TvdbManager()
@@ -56,7 +56,7 @@ void TvdbManager::startSearch(const QUrl &query)
     QNetworkRequest request;
     request.setUrl(query);
 
-    QNetworkReply *reply = networkManager->get(request);
+    QNetworkReply *reply = get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(foundSeries()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 }
@@ -80,7 +80,7 @@ void TvdbManager::foundSeries()
             QNetworkRequest request;
             request.setUrl(bannerQuery);
 
-            QNetworkReply *reply = networkManager->get(request);
+            QNetworkReply *reply = get(request);
             connect(reply, SIGNAL(finished()), this, SLOT(foundBanners()));
             connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
             return;

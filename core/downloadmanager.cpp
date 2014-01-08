@@ -28,9 +28,8 @@
 
 #include <QDebug>
 
-DownloadManager::DownloadManager(QNetworkAccessManager *qnam)
+DownloadManager::DownloadManager()
 {
-    networkManager = qnam;
     hasPoster = false;
 }
 
@@ -63,7 +62,7 @@ void DownloadManager::startDownload()
     QNetworkRequest request;
     request.setUrl(posterLink);
 
-    QNetworkReply *reply = networkManager->get(request);
+    QNetworkReply *reply = get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(downloadFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
 

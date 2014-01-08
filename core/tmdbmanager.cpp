@@ -72,7 +72,7 @@ void TmdbManager::startSearch(const QUrl &query)
     request.setUrl(query);
     request.setRawHeader("Accept", "application/json");
 
-    QNetworkReply *reply = networkManager->get(request);
+    QNetworkReply *reply = get(request);
     connect(reply, SIGNAL(finished()), this, SLOT(searchFinished()));
     connect(reply, SIGNAL(error(QNetworkReply::NetworkError)), this, SLOT(onNetworkError(QNetworkReply::NetworkError)));
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
@@ -111,6 +111,5 @@ void TmdbManager::searchFinished()
     setUrl("https://image.tmdb.org/t/p/w92/" + posterPath.at(0));
     emit posterFound();
 }
-
 
 #include "tmdbmanager.moc"

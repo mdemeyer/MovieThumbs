@@ -25,10 +25,6 @@
 
 #include <QtCore/QObject>
 
-QT_BEGIN_NAMESPACE
-class QNetworkAccessManager;
-QT_END_NAMESPACE
-
 class MovieClient : public QObject
 {
     Q_OBJECT
@@ -40,7 +36,6 @@ public:
     void addSearch(const QString& path);
 
 private:
-    QNetworkAccessManager *m_networkManager;
     TmdbManager *m_tmdb;
 
     bool seriesDownload(const QString& name, const QString& year);
