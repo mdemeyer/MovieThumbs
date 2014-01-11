@@ -82,7 +82,7 @@ const QString FileParser::REGEXYEAR = "(19|20)\\d{2}";
  */
 const QString FileParser::REGEXCD = "[C|c][D|d]\\s*\\d+";
 
-const QStringList FileParser::BLACKLIST = readBlacklist();
+QStringList FileParser::BLACKLIST = readBlacklist();
 
 const QStringList FileParser::LOCALFILES = QStringList()
                     << "poster"
@@ -90,6 +90,7 @@ const QStringList FileParser::LOCALFILES = QStringList()
                     << "folder"
                     << "banner"
                     << "fanart";
+
 const QStringList FileParser::IMAGESUFFIX = QStringList() << "*.png" << "*.jpg" << "*.jpeg";
 
 FileParser::FileParser()

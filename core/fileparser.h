@@ -77,7 +77,7 @@ private:
     /* List with words to filter out.
      * Read from $XDG_DATA_DIRS/MovieThumbs/blacklist
      */
-    static const QStringList BLACKLIST;
+    static QStringList BLACKLIST;
     static QStringList readBlacklist();
 
     static const QStringList LOCALFILES;
