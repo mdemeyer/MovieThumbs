@@ -4,7 +4,7 @@ Needed libs:
     Qt 4.8
     QJSON
 
-    KDE 4.10 (only for kde)
+    KDE 4.x (only for kde)
 
 First install the core moviethumbs lib and then build the kde and/or tools package
 
@@ -33,7 +33,7 @@ Make a build location
     mkdir build && cd build
 
 Use CMake to check all dependancies
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release <path to core dir>
+    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release <path to kde dir>
 
 Build
     make
@@ -48,7 +48,7 @@ Make a build location
     mkdir build && cd build
 
 Use CMake to check all dependancies
-    cmake -DCMAKE_BUILD_TYPE=Release <path to core dir>
+    cmake -DCMAKE_BUILD_TYPE=Release <path to tools dir>
 
 Build
     make
@@ -63,6 +63,5 @@ GNOME 2 users can run gnome2-install.sh to set the correct GConf keys
 
 Uninstall
 ================================
-In the build directory:
-    sudo make uninstall
-
+In the build directory as root:
+    xargs rm -v < install_manifest.txt
