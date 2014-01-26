@@ -93,6 +93,11 @@ void MovieClient::addSearch(const QString &path)
     }
 }
 
+void MovieClient::setSize(int size)
+{
+    m_tmdb->setSize(size);
+}
+
 bool MovieClient::seriesDownload(const QString &seriesName, const QString &year)
 {
     QEventLoop loop;

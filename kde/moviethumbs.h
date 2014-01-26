@@ -41,6 +41,9 @@ public:
 
 public slots:
     void setImage(const QImage &);
+
+private:
+    int size;
 };
 
 #endif // MOVIETHUMBS_H

@@ -41,6 +41,7 @@ extern "C"
 
 MovieThumbs::MovieThumbs()
 {
+    size = 0;
     m_thumbDownloader = new MovieClient();
     connect(m_thumbDownloader, SIGNAL(slotPosterFinished(const QImage&)), this, SLOT(setImage(const QImage&)));
 }
@@ -50,12 +51,17 @@ MovieThumbs::~MovieThumbs()
     delete m_thumbDownloader;
 }
 
-bool MovieThumbs::create(const QString &path, int /*w*/, int /*h*/, QImage &img)
+bool MovieThumbs::create(const QString &path, int width, int /*h*/, QImage &img)
 {
-    if(Solid::Networking::status() == Solid::Networking::Unconnected)
-    {
+    if(Solid::Networking::status() == Solid::Networking::Unconnected) {
         kDebug() << "No network connection available";
         return false;
+    }
+
+    //Large or normal thumbnail
+    if(size != width) {
+        m_thumbDownloader->setSize(width);
+        size = width;
     }
 
     //Reset image

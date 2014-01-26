@@ -86,6 +86,7 @@ void Tools::createThumbnail(const QString &input, const QString &output, int siz
     MovieClient *thumb = new MovieClient();
     connect(thumb, SIGNAL(slotPosterFinished(const QImage&)), this , SLOT(savePoster(const QImage&)));
 
+    thumb->setSize(size);
     thumb->addSearch(input);
 }
 

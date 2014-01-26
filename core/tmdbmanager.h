@@ -31,6 +31,7 @@ public:
     TmdbManager() : DownloadManager() {}
     void findMovie(const QString& name, const QString& year);
     void findTv(const QString& name, const QString& year);
+    void setSize(int thumbSize);
 
 private:
     static const QString KEY;

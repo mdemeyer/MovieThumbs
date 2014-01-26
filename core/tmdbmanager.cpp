@@ -78,6 +78,16 @@ void TmdbManager::startSearch(const QUrl &query)
     connect(reply, SIGNAL(sslErrors(QList<QSslError>)), this, SLOT(slotSslErrors(QList<QSslError>)));
 }
 
+void TmdbManager::setSize(int thumbSize)
+{
+    if(thumbSize <= 128) {
+        size = "w92";
+    } else {
+        size = "w185"; //Download large thumbnails
+    }
+
+}
+
 void TmdbManager::searchFinished()
 {
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
@@ -108,7 +118,7 @@ void TmdbManager::searchFinished()
     }
 
     // http://docs.themoviedb.apiary.io/#configuration
-    setUrl("https://image.tmdb.org/t/p/w92/" + posterPath.at(0));
+    setUrl("https://image.tmdb.org/t/p/" + size + "/" + posterPath.at(0));
     emit posterFound();
 }
 

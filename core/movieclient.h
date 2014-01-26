@@ -34,6 +34,7 @@ public:
     virtual ~MovieClient();
 
     void addSearch(const QString& path);
+    void setSize(int size);
 
 private:
     TmdbManager *m_tmdb;

@@ -52,9 +52,11 @@ protected:
 
     //TODO Remove global and use storeImage(QString name)
     QString nameKey;
+    QString size;
 
 private:
     virtual void startSearch(const QUrl& query) = 0;
+    virtual void setSize(int thumbSize) = 0;
 
     QImage poster;
     QUrl posterLink;
