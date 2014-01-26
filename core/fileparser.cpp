@@ -122,7 +122,7 @@ QString FileParser::cleanName(const QString &name)
     QRegExp regex(REGEXBRACKETS);
     clean.remove(regex);
 
-    // Remove the series detection part from the name. TheTvdb does not recognise it.
+    // Remove the series detection part from the name.
     QStringList::const_iterator constIterator;
     for (constIterator = REGEXSERIES.constBegin(); constIterator != REGEXSERIES.constEnd(); ++constIterator) {
         regex.setPattern(*constIterator);
