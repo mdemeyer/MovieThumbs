@@ -41,13 +41,13 @@
  * \s Matches a whitespace character (QChar::isSpace()).
  */
 const QStringList FileParser::REGEXSERIES = QStringList()
-                    << "[sS]([0-9]+)\\s*[eE]([0-9]+)(.*)" // S00E00
-                    << "\\s[Ee][Pp]\\s?([0-9]+)(.*)" // Ep.00
-                    << "\\s([0-9]+)x[0-9]{2}\\s" // blah.100
-                    << "\\s(?i)p(?:ar)?t\\s" //Part Pt.
-                    << "(19|20)\\d{2}\\s((0[1-9])|(1[012]))\\s((0[1-9]|[12]\\d)|3[01])"  // yyyy-mm-dd
-                    << "((0[1-9]|[12]\\d)|3[01])\\s((0[1-9])|(1[012]))\\s(19|20)\\d{2}"  // dd-mm-yyyy
-                    << ("[\\[|\\(][a-zA-Z0-9]{8}[\\]|\\)]"); //[abCD5678] or (abCD5678)
+        << "[sS]([0-9]+)\\s*[eE]([0-9]+)(.*)" // S00E00
+        << "\\s[Ee][Pp]\\s?([0-9]+)(.*)" // Ep.00
+        << "\\s([0-9]+)x[0-9]{2}\\s" // blah.100
+        << "\\s(?i)p(?:ar)?t\\s" //Part Pt.
+        << "(19|20)\\d{2}\\s((0[1-9])|(1[012]))\\s((0[1-9]|[12]\\d)|3[01])"  // yyyy-mm-dd
+        << "((0[1-9]|[12]\\d)|3[01])\\s((0[1-9])|(1[012]))\\s(19|20)\\d{2}"  // dd-mm-yyyy
+        << ("[\\[|\\(][a-zA-Z0-9]{8}[\\]|\\)]"); //[abCD5678] or (abCD5678)
 
 /* REGEXSEPARATORS
  * Remove underscores, etc. from filenames
@@ -85,11 +85,11 @@ const QString FileParser::REGEXCD = "[C|c][D|d]\\s*\\d+";
 QStringList FileParser::BLACKLIST = readBlacklist();
 
 const QStringList FileParser::LOCALFILES = QStringList()
-                    << "poster"
-                    << "cover"
-                    << "folder"
-                    << "banner"
-                    << "fanart";
+        << "poster"
+        << "cover"
+        << "folder"
+        << "banner"
+        << "fanart";
 
 const QStringList FileParser::IMAGESUFFIX = QStringList() << ".png" << ".jpg" << ".jpeg";
 
@@ -130,9 +130,9 @@ QString FileParser::cleanName(const QString &name)
     }
 
     // Remove the year from the name.
-    if(clean.length() > 4) //movie 2012
+    if (clean.length() > 4) //movie 2012
         regex.setPattern(REGEXYEAR);
-        clean.remove(regex);
+    clean.remove(regex);
 
     return clean.simplified();
 }
@@ -182,8 +182,8 @@ QString FileParser::filterBlacklist(const QString &name)
     clean.remove(regex);
 
     //Remove blacklisted words
-    foreach(const QString& word, BLACKLIST) {
-        if(clean.contains(word, Qt::CaseInsensitive)) {
+    foreach(const QString & word, BLACKLIST) {
+        if (clean.contains(word, Qt::CaseInsensitive)) {
             clean.truncate(clean.indexOf(word, 0, Qt::CaseInsensitive));
         }
     }
@@ -199,10 +199,10 @@ QString FileParser::findLocalFile(const QString &path)
     QStringList localFiles = QStringList() << LOCALFILES << file.baseName();
 
     //Is there a local file in the parent directory?
-    foreach(const QString& name, localFiles) {
-        foreach(const QString& suffix, IMAGESUFFIX) {
+    foreach(const QString & name, localFiles) {
+        foreach(const QString & suffix, IMAGESUFFIX) {
             QFile fileTest(dir.absolutePath() + "/" + name + suffix);
-            if(fileTest.exists()) {
+            if (fileTest.exists()) {
                 return fileTest.fileName();
             }
         }
@@ -217,7 +217,7 @@ QStringList FileParser::readBlacklist()
 
     //Open the file
     QFile file("/usr/share/MovieThumbs/blacklist");
-    if(!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         //Something went wrong: return empty list
         qDebug() << "blacklist file not found!";
         return list;
@@ -225,10 +225,9 @@ QStringList FileParser::readBlacklist()
 
     //Read every line and store it in the list
     QTextStream stream(&file);
-    while(!stream.atEnd())
-    {
+    while (!stream.atEnd()) {
         tempWord = stream.readLine();
-        if(!tempWord.startsWith('#') && !tempWord.isEmpty()) {
+        if (!tempWord.startsWith('#') && !tempWord.isEmpty()) {
             list << tempWord.trimmed();
         }
     }

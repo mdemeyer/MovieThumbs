@@ -45,48 +45,48 @@ void MovieClient::addSearch(const QString &path)
     QString filteredName;
 
     //Look for a local poster or cover file
-    QString localFile= FileParser::findLocalFile(path);
-    if(!localFile.isNull()) {
-	QImage localImage = QImage(localFile);
-	if(!localImage.isNull()) {
+    QString localFile = FileParser::findLocalFile(path);
+    if (!localFile.isNull()) {
+        QImage localImage = QImage(localFile);
+        if (!localImage.isNull()) {
             emit slotPosterFinished(localImage);
-	    return;
-	}
+            return;
+        }
     }
 
-    if(FileParser::isSeries(baseName)){
+    if (FileParser::isSeries(baseName)) {
         //Is the poster already in cache?
-        if(m_tmdb->duplicate(name, year)) {
+        if (m_tmdb->duplicate(name, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
         //Retry cache with cleaner filename
-        if(filteredName.isEmpty()){
+        if (filteredName.isEmpty()) {
             filteredName = FileParser::filterBlacklist(name);
         }
-        if(m_tmdb->duplicate(filteredName, year)) {
+        if (m_tmdb->duplicate(filteredName, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
 
-        if(seriesDownload(name, year)) {
+        if (seriesDownload(name, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
-        } else if(seriesDownload(filteredName, year)) {
+        } else if (seriesDownload(filteredName, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
     }
 
-    if(movieDownload(name, year)) {
+    if (movieDownload(name, year)) {
         emit slotPosterFinished(m_tmdb->Poster());
         return;
     } else {
         //Retry search with cleaner filename
-        if(filteredName.isEmpty()){
+        if (filteredName.isEmpty()) {
             filteredName = FileParser::filterBlacklist(name);
         }
-        if(movieDownload(filteredName, year)) {
+        if (movieDownload(filteredName, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
@@ -108,7 +108,7 @@ bool MovieClient::seriesDownload(const QString &seriesName, const QString &year)
     m_tmdb->findTv(seriesName, year);
     loop.exec();
 
-    if(m_tmdb->hasPoster) {
+    if (m_tmdb->hasPoster) {
         m_tmdb->startDownload();
         loop.exec();
         return true;
@@ -126,7 +126,7 @@ bool MovieClient::movieDownload(const QString &movieName, const QString &movieYe
     m_tmdb->findMovie(movieName, movieYear);
     loop.exec();
 
-    if(m_tmdb->hasPoster) {
+    if (m_tmdb->hasPoster) {
         m_tmdb->startDownload();
         loop.exec();
         return true;

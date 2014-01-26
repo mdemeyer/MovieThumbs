@@ -39,38 +39,38 @@ int main(int argc, char** argv)
 
     Tools tool;
 
-    while ((argument = getopt (argc, argv, "i:o:s::hvt:")) != -1) {
+    while ((argument = getopt(argc, argv, "i:o:s::hvt:")) != -1) {
         switch (argument) {
-            case 'i':
-                // Input file
-                input = optarg;
-                break;
-            case 'o':
-                // Output file
-                output = optarg;
-                break;
-            case 's':
-                // Size
-                size = optarg ? atoi(optarg) : 128;
-                break;
-            case 'h':
-                tool.printHelp();
-                return 0;
-            case 'v':
-                tool.printVersion();
-                return 0;
-            case 't':
-		// Test filename
-		tool.testFile(optarg);
-		return 0;
-            case '?':
-            default:
-                tool.printHelp();
-                return -1;
+        case 'i':
+            // Input file
+            input = optarg;
+            break;
+        case 'o':
+            // Output file
+            output = optarg;
+            break;
+        case 's':
+            // Size
+            size = optarg ? atoi(optarg) : 128;
+            break;
+        case 'h':
+            tool.printHelp();
+            return 0;
+        case 'v':
+            tool.printVersion();
+            return 0;
+        case 't':
+            // Test filename
+            tool.testFile(optarg);
+            return 0;
+        case '?':
+        default:
+            tool.printHelp();
+            return -1;
         }
     }
 
-    if(!input.isNull() && !output.isNull()) {
+    if (!input.isNull() && !output.isNull()) {
         tool.createThumbnail(input, output, size);
     } else {
         tool.printHelp();

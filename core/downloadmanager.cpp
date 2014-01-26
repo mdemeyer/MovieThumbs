@@ -39,7 +39,7 @@ DownloadManager::~DownloadManager()
 
 bool DownloadManager::duplicate(const QString &name, const QString & /*year*/)
 {
-    if(cache.contains(name)) {
+    if (cache.contains(name)) {
         copyImage(cache.object(name));
         return true;
     }

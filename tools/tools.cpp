@@ -68,12 +68,12 @@ void Tools::savePoster(const QImage poster)
     QImage saveFile = poster;
 
     //Resize the image
-    if(fileSize != 0 && saveFile.height() != fileSize) {
-         saveFile = saveFile.scaledToHeight(fileSize);
+    if (fileSize != 0 && saveFile.height() != fileSize) {
+        saveFile = saveFile.scaledToHeight(fileSize);
     }
 
     //Save the file on disk
-    if(!saveFile.save(outputFile, "PNG", 0)) {
+    if (!saveFile.save(outputFile, "PNG", 0)) {
         cerr << "Cannot save file!" << endl;
     }
 }
@@ -102,10 +102,10 @@ void Tools::testFile(const QString &name)
     bool series = FileParser::isSeries(baseName);
 
     cout << endl
-        << "Base Name: " << baseName.toStdString() << endl
-        << "Suffix: " << suffix.toStdString() << endl
-        << "Series: " << series << endl
-        << "Year: " << year.toStdString()<< endl
-        << "Clean Name: " << cleanName.toStdString()<< endl
-        << "Filtered Name: " << filteredName.toStdString()<< endl;
+         << "Base Name: " << baseName.toStdString() << endl
+         << "Suffix: " << suffix.toStdString() << endl
+         << "Series: " << series << endl
+         << "Year: " << year.toStdString() << endl
+         << "Clean Name: " << cleanName.toStdString() << endl
+         << "Filtered Name: " << filteredName.toStdString() << endl;
 }

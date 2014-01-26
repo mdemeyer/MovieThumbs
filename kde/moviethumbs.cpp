@@ -53,13 +53,13 @@ MovieThumbs::~MovieThumbs()
 
 bool MovieThumbs::create(const QString &path, int width, int /*h*/, QImage &img)
 {
-    if(Solid::Networking::status() == Solid::Networking::Unconnected) {
+    if (Solid::Networking::status() == Solid::Networking::Unconnected) {
         kDebug() << "No network connection available";
         return false;
     }
 
     //Large or normal thumbnail
-    if(size != width) {
+    if (size != width) {
         m_thumbDownloader->setSize(width);
         size = width;
     }

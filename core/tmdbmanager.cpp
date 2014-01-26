@@ -43,7 +43,7 @@ void TmdbManager::findMovie(const QString &name, const QString &year)
     query.addQueryItem("api_key", KEY);
     query.addQueryItem("query", name);
     query.addQueryItem("language", language());
-    if(!year.isEmpty()) {
+    if (!year.isEmpty()) {
         query.addQueryItem("year", year);
     }
 
@@ -56,12 +56,12 @@ void TmdbManager::findTv(const QString &name, const QString &year)
     query.addQueryItem("api_key", KEY);
     query.addQueryItem("query", name);
     query.addQueryItem("language", language());
-    if(!year.isEmpty()) {
+    if (!year.isEmpty()) {
         query.addQueryItem("first_air_date_year", year);
     }
 
     nameKey = name;
-    connect(this,SIGNAL(posterDownloaded()),this,SLOT(storeImage()));
+    connect(this, SIGNAL(posterDownloaded()), this, SLOT(storeImage()));
 
     startSearch(query);
 }
@@ -80,7 +80,7 @@ void TmdbManager::startSearch(const QUrl &query)
 
 void TmdbManager::setSize(int thumbSize)
 {
-    if(thumbSize <= 128) {
+    if (thumbSize <= 128) {
         size = "w92";
     } else {
         size = "w185"; //Download large thumbnails
@@ -99,20 +99,20 @@ void TmdbManager::searchFinished()
 
     QVariantMap result = parser.parse(data, &ok).toMap();
     if (!ok) {
-        qDebug() <<"An error occurred during parsing";
+        qDebug() << "An error occurred during parsing";
         emit downloadError();
         return;
     }
 
     QVariantList movies = result["results"].toList();
-    if(movies.isEmpty()) {
+    if (movies.isEmpty()) {
         //No results found.
         emit downloadError();
         return;
     }
 
     QStringList posterPath;
-    foreach(const QVariant &variant, movies) {
+    foreach(const QVariant & variant, movies) {
         QVariantMap poster = variant.toMap();
         posterPath << (poster["poster_path"]).toString();
     }
