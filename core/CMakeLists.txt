@@ -6,6 +6,16 @@ find_package(Qt4 REQUIRED)
 find_package(QJSON REQUIRED)
 
 add_definitions (${QT_DEFINITIONS})
+
+if(NOT LIB_INSTALL_DIR)
+    get_property(LIB64 GLOBAL PROPERTY FIND_LIBRARY_USE_LIB64_PATHS)
+    if(LIB64)
+        set(LIB_INSTALL_DIR lib64)
+    else()
+        set(LIB_INSTALL_DIR lib)
+    endif()
+endif()
+
 include_directories(${CMAKE_SOURCE_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
     ${QT_INCLUDES}
@@ -40,6 +50,6 @@ target_link_libraries(moviethumbs
    ${qjson_LIBRARIES} #Support debian
    )
 
-install(TARGETS moviethumbs LIBRARY DESTINATION lib)
+install(TARGETS moviethumbs LIBRARY DESTINATION ${LIB_INSTALL_DIR})
 install(FILES ${MOVIETHUMBS_INCLUDES} DESTINATION include/libmoviethumbs)
 install(FILES blacklist DESTINATION "/usr/share/MovieThumbs/")
