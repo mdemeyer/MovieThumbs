@@ -91,7 +91,7 @@ const QStringList FileParser::LOCALFILES = QStringList()
                     << "banner"
                     << "fanart";
 
-const QStringList FileParser::IMAGESUFFIX = QStringList() << "*.png" << "*.jpg" << "*.jpeg";
+const QStringList FileParser::IMAGESUFFIX = QStringList() << ".png" << ".jpg" << ".jpeg";
 
 FileParser::FileParser()
 {
@@ -195,17 +195,16 @@ QString FileParser::findLocalFile(const QString &path)
     QFileInfo file(path);
     QDir dir = file.dir();
 
-    //Make a list of all images in the directory
-    dir.setNameFilters(IMAGESUFFIX);
-    QFileInfoList files = dir.entryInfoList();
-
-    //Add identical name to the list (moviename.png)
+    //Add identical name to the list ('moviename'.mkv)
     QStringList localFiles = QStringList() << LOCALFILES << file.baseName();
 
-    //Compare the image list to standard file names
-    foreach(const QFileInfo& image, files) {
-        if(localFiles.contains(image.completeBaseName(), Qt::CaseInsensitive)) {
-            return image.filePath();
+    //Is there a local file in the parent directory?
+    foreach(const QString& name, localFiles) {
+        foreach(const QString& suffix, IMAGESUFFIX) {
+            QFile fileTest(dir.absolutePath() + "/" + name + suffix);
+            if(fileTest.exists()) {
+                return fileTest.fileName();
+            }
         }
     }
     return QString();
