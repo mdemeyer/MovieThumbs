@@ -193,15 +193,15 @@ QString FileParser::filterBlacklist(const QString &name)
 QString FileParser::findLocalFile(const QString &path)
 {
     QFileInfo file(path);
-    QDir dir = file.dir();
+    QString dir = file.dir().absolutePath();
 
     //Add identical name to the list ('moviename'.mkv)
-    QStringList localFiles = QStringList() << LOCALFILES << file.baseName();
+    QStringList localFiles = QStringList() << file.baseName() << LOCALFILES;
 
     //Is there a local file in the parent directory?
     foreach(const QString & name, localFiles) {
         foreach(const QString & suffix, IMAGESUFFIX) {
-            QFile fileTest(dir.absolutePath() + "/" + name + suffix);
+            QFile fileTest(dir + "/" + name + suffix);
             if (fileTest.exists()) {
                 return fileTest.fileName();
             }
