@@ -120,7 +120,8 @@ QString FileParser::cleanName(const QString &name)
 
     //Ignore all information between brackets.
     QRegExp regex(REGEXBRACKETS);
-    clean.remove(regex);
+    clean.replace(regex, " ");
+    clean = clean.trimmed();
 
     // Remove the series detection part from the name.
     QStringList::const_iterator constIterator;
@@ -183,7 +184,7 @@ QString FileParser::filterBlacklist(const QString &name)
 
     //Remove blacklisted words
     foreach(const QString & word, BLACKLIST) {
-        if (clean.contains(word, Qt::CaseInsensitive)) {
+        if (clean.contains(" " + word, Qt::CaseInsensitive)) {
             clean.truncate(clean.indexOf(word, 0, Qt::CaseInsensitive));
         }
     }
