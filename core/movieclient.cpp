@@ -72,7 +72,7 @@ void MovieClient::addSearch(const QString &path)
         if (seriesDownload(name, year)) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
-        } else if (seriesDownload(filteredName, year)) {
+        } else if ((filteredName != name) && (seriesDownload(filteredName, year))) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
@@ -86,7 +86,7 @@ void MovieClient::addSearch(const QString &path)
         if (filteredName.isEmpty()) {
             filteredName = FileParser::filterBlacklist(name);
         }
-        if (movieDownload(filteredName, year)) {
+        if ((filteredName != name) && (movieDownload(filteredName, year))) {
             emit slotPosterFinished(m_tmdb->Poster());
             return;
         }
