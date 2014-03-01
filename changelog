@@ -1,3 +1,15 @@
+0.4.0 (2014-03-01)
+================================
+* Use tmdb for series
+* Removed tvdb usage
+* Look for posters in native locale
+* 'moviethumbs -t' for testing the fileparser
+* Use local thumbnails
+* Download images with SSL
+* Detect thumbnail size
+* Save network traffic
+* Small bugfixes
+
 0.3.1 (2013-08-14)
 ================================
 * Fix cache issue
