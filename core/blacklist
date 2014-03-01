@@ -50,6 +50,8 @@ www
 # Video source filters
 # Taken from filebot. Filebot is a great app to rename you movie collection, you should check it out ;)
 # http://www.filebot.net/
+HDCAM
+IMAX
 CAMRip
 CAM
 PDVD
