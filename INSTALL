@@ -1,7 +1,7 @@
 How to install MovieThumbs.
 ================================
 Needed libs:
-    Qt 4.8
+    Qt 5.x
 
     KDE 5.x (only for kde)
 
