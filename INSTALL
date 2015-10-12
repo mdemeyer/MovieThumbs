@@ -2,9 +2,8 @@ How to install MovieThumbs.
 ================================
 Needed libs:
     Qt 4.8
-    QJSON
 
-    KDE 4.x (only for kde)
+    KDE 5.x (only for kde)
 
 First install the core moviethumbs lib and then build the kde and/or tools package
 
@@ -33,7 +32,7 @@ Make a build location
     mkdir build && cd build
 
 Use CMake to check all dependancies
-    cmake -DCMAKE_INSTALL_PREFIX=`kde4-config --prefix` -DCMAKE_BUILD_TYPE=Release <path to kde dir>
+    cmake -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release <path to kde dir>
 
 Build
     make
