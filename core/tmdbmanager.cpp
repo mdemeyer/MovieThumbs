@@ -33,32 +33,40 @@
 
 #include <QDebug>
 
-#include <qjson/parser.h>
+#include <QUrlQuery>
+#include <QJsonDocument>
+#include <QJsonParseError>
 
 const QString TmdbManager::KEY = "5c8533aacb1fa275a5113d0728268d5a";
 
 void TmdbManager::findMovie(const QString &name, const QString &year)
 {
     QUrl query("https://api.themoviedb.org/3/search/movie");
-    query.addQueryItem("api_key", KEY);
-    query.addQueryItem("query", name);
-    query.addQueryItem("language", language());
+    
+    QUrlQuery q;
+    q.addQueryItem("api_key", KEY);
+    q.addQueryItem("query", name);
+    q.addQueryItem("language", language());
     if (!year.isEmpty()) {
-        query.addQueryItem("year", year);
+        q.addQueryItem("year", year);
     }
-
+    query.setQuery(q);
+    
     startSearch(query);
 }
 
 void TmdbManager::findTv(const QString &name, const QString &year)
 {
     QUrl query("https://api.themoviedb.org/3/search/tv");
-    query.addQueryItem("api_key", KEY);
-    query.addQueryItem("query", name);
-    query.addQueryItem("language", language());
+    
+    QUrlQuery q;
+    q.addQueryItem("api_key", KEY);
+    q.addQueryItem("query", name);
+    q.addQueryItem("language", language());
     if (!year.isEmpty()) {
-        query.addQueryItem("first_air_date_year", year);
+        q.addQueryItem("first_air_date_year", year);
     }
+    query.setQuery(q);
 
     nameKey = name;
     connect(this, SIGNAL(posterDownloaded()), this, SLOT(storeImage()));
@@ -93,11 +101,21 @@ void TmdbManager::searchFinished()
     QNetworkReply *queryReply = qobject_cast<QNetworkReply *>(sender());
     QByteArray data = queryReply->readAll();
     queryReply->deleteLater();
-
-    QJson::Parser parser;
+    
+    QVariantMap result;
     bool ok;
 
-    QVariantMap result = parser.parse(data, &ok).toMap();
+    QJsonParseError *err = new QJsonParseError();
+    QJsonDocument doc = QJsonDocument::fromJson(data, err);
+
+    if (err->error != 0) {
+        qDebug() << err->errorString();
+        ok = false;
+    } else {
+        result = doc.toVariant().toMap();
+        ok = true;
+    }
+
     if (!ok) {
         qDebug() << "An error occurred during parsing";
         emit downloadError();

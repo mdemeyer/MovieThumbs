@@ -27,6 +27,8 @@
 #include <kio/thumbcreator.h>
 #include <libmoviethumbs/movieclient.h>
 
+class QNetworkConfigurationManager;
+
 class MovieThumbs : public QObject, public ThumbCreator
 {
     Q_OBJECT
@@ -44,6 +46,7 @@ public slots:
 
 private:
     int size;
+    QNetworkConfigurationManager *m_qncm; // used to monitor internet connection status
 };
 
 #endif // MOVIETHUMBS_H

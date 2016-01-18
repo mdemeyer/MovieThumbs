@@ -10,10 +10,9 @@ api documentation: http://docs.themoviedb.apiary.io/
 I would like to thank the tmdb team for allowing the use of their api.
 
 External dependencies:
-    Qt 4
-    QJson
+    Qt 5
 
-    KDE SC 4 (for KDE)
+    KDE SC 5 (for KDE)
     nautilus (for gnome)
 
 Installation:

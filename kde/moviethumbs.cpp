@@ -25,9 +25,10 @@
 #include <QtCore/QString>
 #include <QtGui/QImage>
 #include <QtNetwork/QNetworkAccessManager>
+#include <KDELibs4Support/kdemacros.h>
 
-#include <KDebug>
-#include <solid/networking.h>
+#include <QDebug>
+#include <QNetworkConfigurationManager>
 
 QImage thumbnail;
 
@@ -43,18 +44,20 @@ MovieThumbs::MovieThumbs()
 {
     size = 0;
     m_thumbDownloader = new MovieClient();
+    m_qncm = new QNetworkConfigurationManager();
     connect(m_thumbDownloader, SIGNAL(slotPosterFinished(const QImage&)), this, SLOT(setImage(const QImage&)));
 }
 
 MovieThumbs::~MovieThumbs()
 {
     delete m_thumbDownloader;
+    m_qncm->deleteLater();
 }
 
 bool MovieThumbs::create(const QString &path, int width, int /*h*/, QImage &img)
 {
-    if (Solid::Networking::status() == Solid::Networking::Unconnected) {
-        kDebug() << "No network connection available";
+    if (!m_qncm->isOnline()) {
+        qDebug() << "No network connection available";
         return false;
     }
 
@@ -84,4 +87,4 @@ ThumbCreator::Flags MovieThumbs::flags() const
     return (Flags)(None);
 }
 
-#include "moviethumbs.moc"
+// #include "moviethumbs.moc"
